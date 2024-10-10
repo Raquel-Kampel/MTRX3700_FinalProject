@@ -1,0 +1,48 @@
+module json_to_uart(
+    input logic clk,
+    input logic rst,
+    input logic start,                     // Start signal to initiate conversion and transmission
+    input [7:0] json_str [0:63],           // JSON string as an array of 8-bit characters (maximum length 64)
+    input [7:0] json_len,                  // Length of the JSON string
+    output logic [7:0] data_out,           // 8-bit data to send to UART
+    output logic data_valid,               // Signal when data_out is valid
+    input uart_ready,                      // Signal from UART when it's ready to send new data
+    output logic done                      // Signals when the entire string has been transmitted
+);
+
+    // Internal state variables
+    logic [7:0] byte_index;                // Index to track which byte in the JSON string is being transmitted
+    logic transmitting;
+
+    // FSM for sending JSON string byte by byte
+    always_ff @(posedge clk or posedge rst) begin
+        if (rst) begin
+            byte_index <= 0;
+            transmitting <= 0;
+            data_valid <= 0;
+            done <= 0;
+        end else if (start && !transmitting) begin
+            transmitting <= 1;               // Start transmission
+            byte_index <= 0;
+            data_valid <= 0;
+            done <= 0;
+        end else if (transmitting) begin
+            if (uart_ready && !data_valid) begin
+                // Send the next byte when UART is ready and data_valid is low
+                data_out <= json_str[byte_index];
+                data_valid <= 1;
+                byte_index <= byte_index + 1;
+            end else if (data_valid && !uart_ready) begin
+                // Wait for UART to consume data before moving on
+                data_valid <= 0;
+            end
+            
+            // Check if we are done transmitting the whole JSON string
+            if (byte_index == json_len && !data_valid) begin
+                transmitting <= 0;
+                done <= 1;                   // Signal transmission completion
+            end
+        end
+    end
+
+endmodule
