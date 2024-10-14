@@ -1,0 +1,15 @@
+module fft_input_buffer #(
+    parameter W = 16,
+    parameter NSamples = 1024
+) (
+    input                clk,
+    input                reset,
+    input                audio_clk,
+    dstream.in           audio_input,
+    output logic [W-1:0] fft_input,
+    output logic         fft_input_valid
+);
+
+    // Your code here!
+
+endmodule
