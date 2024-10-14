@@ -1,4 +1,4 @@
-module top_level_loudness (
+module top_level (
     input    CLOCK_50,
     output   I2C_SCLK,
     inout    I2C_SDAT,
@@ -63,7 +63,7 @@ module top_level_loudness (
     assign AUD_XCK = adc_clk;
 
     // Instantiate FFT loudness detection module
-    fft_loudness_calculator #(.W(W), .NSamples(NSamples)) u_fft_loudness_calculator (
+    fft_mag_sq #(.W(W), .NSamples(NSamples)) u_fft_mag_sq (
         .clk(adc_clk),
         .reset(~KEY[0]),
         .fft_valid(audio_input.valid),
