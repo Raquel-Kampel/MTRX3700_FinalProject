@@ -1,4 +1,4 @@
-module fft_loudness_calculator #(
+module fft_mag_sq #(
     parameter W = 16, // Bit-width of the real and imaginary FFT inputs
     parameter NSamples = 1024  // Number of FFT points
 ) (
