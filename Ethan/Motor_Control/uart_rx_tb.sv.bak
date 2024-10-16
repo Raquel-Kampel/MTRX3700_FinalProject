@@ -1,0 +1,75 @@
+module uart_rx_tb();
+
+    // Testbench signals
+    logic clk;
+    logic rst;
+    logic uart_in;
+    logic [7:0] data_rx;
+    logic valid;
+    logic ready;
+
+    // Instantiate the DUT (Device Under Test)
+    uart_rx #(
+        .CLKS_PER_BIT(434),  // Baud rate = 115200 (for 50 MHz clock)
+        .BITS_N(8)
+    ) dut (
+        .clk(clk),
+        .rst(rst),
+        .uart_in(uart_in),
+        .data_rx(data_rx),
+        .valid(valid),
+        .ready(ready)
+    );
+
+    // Generate a 50 MHz clock
+    always #10 clk = ~clk;
+
+    // UART transmission helper task (sends one byte over UART)
+    task send_byte(input [7:0] byte);
+        integer i;
+        begin
+            // Start bit (low)
+            uart_in = 0;
+            #(434 * 20);  // Wait 1 bit time
+
+            // Send 8 data bits (LSB first)
+            for (i = 0; i < 8; i = i + 1) begin
+                uart_in = byte[i];
+                #(434 * 20);  // Wait 1 bit time
+            end
+
+            // Stop bit (high)
+            uart_in = 1;
+            #(434 * 20);  // Wait 1 bit time
+        end
+    endtask
+
+    // Test scenario
+    initial begin
+        // Initialize signals
+        clk = 0;
+        rst = 1;
+        uart_in = 1;  // Idle state (high)
+        ready = 1;    // Always ready to receive data
+
+        // Reset the DUT
+        #50 rst = 0;
+
+        // Send a byte over UART (e.g., 0x55 or "U" in ASCII)
+        send_byte(8'h55);  // Binary: 01010101
+
+        // Wait for the `valid` signal to assert
+        @(posedge valid);
+
+        // Check the received data
+        if (data_rx == 8'h55) begin
+            $display("Test Passed: Received byte = 0x%h at time %0t", data_rx, $time);
+        end else begin
+            $display("Test Failed: Expected 0x55, but got 0x%h at time %0t", data_rx, $time);
+        end
+
+        // End the simulation
+        #100 $finish;
+    end
+
+endmodule

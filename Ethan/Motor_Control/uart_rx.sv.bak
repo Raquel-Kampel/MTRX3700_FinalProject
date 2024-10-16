@@ -1,0 +1,78 @@
+module uart_rx #(
+    parameter CLKS_PER_BIT = 434,  // Baud rate = 115200 (50 MHz clock)
+    parameter BITS_N = 8           // 8 data bits
+) (
+    input  logic clk,              // Clock signal (50 MHz)
+    input  logic rst,              // Reset signal
+    input  logic uart_in,          // UART RX input (GPIO[3])
+    output logic [7:0] data_rx,    // Received byte
+    output logic valid,            // Signal that a byte has been received
+    input  logic ready             // Ready to accept a new byte
+);
+
+    // UART RX state machine states
+    typedef enum logic [1:0] {
+        IDLE = 2'b00,
+        START_BIT = 2'b01,
+        DATA_BITS = 2'b10,
+        STOP_BIT = 2'b11
+    } state_t;
+
+    state_t state, next_state;    // State and next state
+
+    // Internal signals
+    logic [15:0] clk_count;       // Clock counter for sampling bits
+    logic [2:0] bit_index;        // Index for the data bits (0 to 7)
+    logic [7:0] shift_reg;        // Shift register to store incoming bits
+
+    // State transition logic
+    always_ff @(posedge clk or posedge rst) begin
+        if (rst) begin
+            state <= IDLE;
+            clk_count <= 0;
+            bit_index <= 0;
+            shift_reg <= 0;
+        end else begin
+            state <= next_state;
+
+            if (state == START_BIT || state == DATA_BITS || state == STOP_BIT) begin
+                clk_count <= clk_count + 1;
+            end else begin
+                clk_count <= 0;
+            end
+
+            if (state == DATA_BITS && clk_count == CLKS_PER_BIT - 1) begin
+                shift_reg <= {uart_in, shift_reg[7:1]};  // Shift bits in
+                bit_index <= bit_index + 1;
+            end
+        end
+    end
+
+    // Next-state logic
+    always_comb begin
+        next_state = state;
+        case (state)
+            IDLE: begin
+                if (!uart_in)  // Start bit detected (UART idle is high)
+                    next_state = START_BIT;
+            end
+            START_BIT: begin
+                if (clk_count == CLKS_PER_BIT - 1)  // Wait for start bit to complete
+                    next_state = DATA_BITS;
+            end
+            DATA_BITS: begin
+                if (bit_index == BITS_N - 1 && clk_count == CLKS_PER_BIT - 1)
+                    next_state = STOP_BIT;  // All data bits received
+            end
+            STOP_BIT: begin
+                if (clk_count == CLKS_PER_BIT - 1)  // Stop bit complete
+                    next_state = IDLE;
+            end
+        endcase
+    end
+
+    // Output logic
+    assign data_rx = shift_reg;        // Output the received byte
+    assign valid = (state == STOP_BIT) && (clk_count == CLKS_PER_BIT - 1);
+
+endmodule

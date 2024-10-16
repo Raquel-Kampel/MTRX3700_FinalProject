@@ -1,0 +1,74 @@
+module json_to_uart_top_tb();
+
+    // Testbench signals
+    logic clk;
+    logic rst;
+    logic start;
+    logic [7:0] json_str [0:31];  // JSON string input (max 32 bytes)
+    logic [7:0] json_len;         // Length of the JSON string
+    logic GPIO_5;                 // UART TX line output (connected to robot's RX)
+    logic GPIO_3;                 // UART RX line input (connected to robot's TX)
+    logic done;                   // Transmission complete signal
+
+    // Instantiate the DUT (Device Under Test)
+    json_to_uart_top dut (
+        .clk(clk),
+        .rst(rst),
+        .start(start),
+        .json_str(json_str),
+        .json_len(json_len),
+        .GPIO_5(GPIO_5),
+        .GPIO_3(GPIO_3),
+        .done(done)
+    );
+
+    // Generate a clock signal (50 MHz)
+    always #10 clk = ~clk;
+
+    // Test JSON string and simulation control
+    initial begin
+        // Initialize signals
+        clk = 0;
+        rst = 1;
+        start = 0;
+        GPIO_3 = 1;  // Assume idle high for UART RX line
+        json_len = 13;  // Length of the JSON string
+
+        // Provide sample JSON string (e.g., {"cmd":"start"})
+        json_str[0] = "{";
+        json_str[1] = "\"";
+        json_str[2] = "c";
+        json_str[3] = "m";
+        json_str[4] = "d";
+        json_str[5] = "\"";
+        json_str[6] = ":";
+        json_str[7] = "\"";
+        json_str[8] = "s";
+        json_str[9] = "t";
+        json_str[10] = "a";
+        json_str[11] = "r";
+        json_str[12] = "t";
+        json_str[13] = "\"";
+        json_str[14] = "}";
+
+        // Release reset after 100ns
+        #100 rst = 0;
+
+        // Start the transmission after a short delay
+        #50 start = 1;
+
+        // Wait for transmission to complete
+        wait(done);
+
+        // Check if the transmission completed successfully
+        if (done) begin
+            $display("Test Passed: JSON transmission completed at time %0t", $time);
+        end else begin
+            $display("Test Failed: Transmission did not complete as expected.");
+        end
+
+        // End the simulation
+        #100 $finish;
+    end
+
+endmodule
