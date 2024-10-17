@@ -1,0 +1,105 @@
+module json_uart_tb;
+
+    // Testbench signals
+    logic clk;
+    logic rst;
+    logic start;
+    logic [7:0] json_str [0:63];     // Array for JSON string (maximum of 64 characters)
+    logic [7:0] json_len;            // Length of the JSON string
+    logic [7:0] data_out;            // Data output from json_to_uart
+    logic data_valid;                // Valid signal for data from json_to_uart
+    logic uart_ready;                // Ready signal from UART transmitter
+    logic done;                      // Done signal from json_to_uart
+    logic uart_out;                  // UART transmission line output
+
+    // Clock generation (50 MHz clock)
+    always #10 clk = ~clk;  // 50 MHz clock with 20ns period
+
+    // Instantiate the JSON to UART conversion module
+    json_to_uart json_inst (
+        .clk(clk),
+        .rst(rst),
+        .start(start),
+        .json_str(json_str),
+        .json_len(json_len),
+        .data_out(data_out),
+        .data_valid(data_valid),
+        .uart_ready(uart_ready),
+        .done(done)
+    );
+
+    // Instantiate the UART transmitter module
+    uart_tx #(
+        .CLKS_PER_BIT(434),  // Baud rate = 115200 (with 50 MHz clock)
+        .BITS_N(8),
+        .PARITY_TYPE(0)      // No parity bit
+    ) uart_inst (
+        .clk(clk),
+        .rst(rst),
+        .data_tx(data_out),
+        .uart_out(uart_out),
+        .valid(data_valid),
+        .ready(uart_ready)
+    );
+
+    // Initial block to drive the inputs and simulate the UART transmission
+    initial begin
+        // Initialize signals
+        clk = 0;
+        rst = 1;
+        start = 0;
+        uart_ready = 0;
+        
+        // Apply reset for 50 time units
+        #50 rst = 0;
+
+        // Load JSON string into json_str array
+        json_str[0] = 8'h7B;  // '{'
+        json_str[1] = 8'h22;  // '"'
+        json_str[2] = 8'h54;  // 'T'
+        json_str[3] = 8'h22;  // '"'
+        json_str[4] = 8'h3A;  // ':'
+        json_str[5] = 8'h31;  // '1'
+        json_str[6] = 8'h31;  // '1'
+        json_str[7] = 8'h2C;  // ','
+        json_str[8] = 8'h22;  // '"'
+        json_str[9] = 8'h4C;  // 'L'
+        json_str[10] = 8'h22; // '"'
+        json_str[11] = 8'h3A; // ':'
+        json_str[12] = 8'h31; // '1'
+        json_str[13] = 8'h30; // '0'
+        json_str[14] = 8'h30; // '0'
+        json_str[15] = 8'h2C; // ','
+        json_str[16] = 8'h22; // '"'
+        json_str[17] = 8'h52; // 'R'
+        json_str[18] = 8'h22; // '"'
+        json_str[19] = 8'h3A; // ':'
+        json_str[20] = 8'h2D; // '-'
+        json_str[21] = 8'h31; // '1'
+        json_str[22] = 8'h30; // '0'
+        json_str[23] = 8'h30; // '0'
+        json_str[24] = 8'h7D; // '}'
+
+        json_len = 25;  // Set the length of the JSON string
+
+        // Start transmitting the JSON string
+        #100 start = 1;
+        #100 start = 0;
+
+        // Run the simulation for a sufficient duration to capture the full transmission
+        #10000 $finish;
+    end
+
+    // Monitor the uart_out signal and other control signals to track transmission
+    initial begin
+        $monitor("Time: %0t | UART Out: %b | Data Out: %h | Data Valid: %b | UART Ready: %b | Done: %b", 
+                  $time, uart_out, data_out, data_valid, uart_ready, done);
+    end
+
+    // Dump waveform data for analysis in a waveform viewer
+    initial begin
+        $dumpfile("json_uart_tb.vcd");
+        $dumpvars(0, json_uart_tb);
+    end
+
+endmodule
