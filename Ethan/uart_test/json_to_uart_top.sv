@@ -12,17 +12,17 @@ module json_to_uart_top(
     logic uart_ready;
     logic [7:0] data_out;
     logic data_valid;
-    logic [7:0] byte_index;
+    logic [7:0] byte_index;             // Track current byte index
     logic transmitting;
     logic [31:0] delay_counter;
 
     // Parameters
     parameter CLK_FREQ_HZ = 50_000_000;  
-    parameter DELAY_SEC = 1;             
+    parameter DELAY_SEC = 0;             
     parameter DELAY_COUNT = CLK_FREQ_HZ * DELAY_SEC;
 
-    // Hardcoded JSON string: {"T":1,"L":0.5,"R":0.5}
-    logic [255:0] json_flat = {
+    // Modified JSON string: {"T":1,"L":0.5,"R":0.5}\n
+    logic [263:0] json_flat = {
         8'h7B,  // '{'
         8'h22,  // '"'
         8'h54,  // 'T'
@@ -45,15 +45,16 @@ module json_to_uart_top(
         8'h30,  // '0'
         8'h2E,  // '.'
         8'h35,  // '5'
-        8'h7D   // '}'
+        8'h7D,  // '}'
+        8'h0A   // '\n' (newline character)
     };
 
-    // Length of the JSON string (23 bytes)
-    logic [7:0] json_len = 23;
+    // Updated length of the JSON string (24 bytes, including \n)
+    logic [7:0] json_len = 24;
 
     // Instantiate the UART transmitter
     uart_tx #(
-        .CLKS_PER_BIT(434),
+        .CLKS_PER_BIT(434),  // Baud rate = 115200 (for 50 MHz clock)
         .BITS_N(8),
         .PARITY_TYPE(0)
     ) uart_tx_inst (
@@ -68,23 +69,23 @@ module json_to_uart_top(
     // Assign the UART TX output to GPIO_5
     assign GPIO_5 = uart_out;
 
-    // Display the current transmitted byte and status on LEDs
+    // Display the transmitted byte and status on LEDs
     assign LEDR[7:0] = data_out;      // Show transmitted byte on LEDs 7:0
-    assign LEDR[15:8] = byte_index;   // Show current byte index on LEDs 15:8
-    assign LEDR[16] = transmitting;   // Indicate transmission status
-    assign LEDR[17] = done;           // Indicate transmission complete
+    assign LEDR[15:8] = byte_index;   // Show byte index on LEDs 15:8
+    assign LEDR[16] = transmitting;   // Transmission status
+    assign LEDR[17] = done;           // Transmission complete status
 
-    // FSM to manage JSON transmission with delay
+    // FSM to manage JSON transmission with delay and correct order
     always_ff @(posedge clk or posedge rst) begin
         if (rst) begin
-            byte_index <= 0;
+            byte_index <= json_len - 1;  // Start from the last byte
             transmitting <= 0;
             data_valid <= 0;
             done <= 0;
             delay_counter <= DELAY_COUNT;
         end else if (start && !transmitting) begin
             transmitting <= 1;
-            byte_index <= 0;
+            byte_index <= json_len - 1;  // Start from the last byte
             data_valid <= 0;
             done <= 0;
             delay_counter <= DELAY_COUNT;
@@ -95,19 +96,20 @@ module json_to_uart_top(
                 // Send the next byte when UART is ready
                 data_out <= json_flat[byte_index * 8 +: 8];
                 data_valid <= 1;
-                byte_index <= byte_index + 1;
+                byte_index <= byte_index - 1;  // Decrement index for correct order
                 delay_counter <= DELAY_COUNT;
             end else if (data_valid && uart_ready) begin
                 data_valid <= 0;  // Wait for UART to consume the data
             end
 
-            if (byte_index == json_len && !data_valid) begin
+            if (byte_index == 8'hFF && !data_valid) begin  // Transmission complete
                 transmitting <= 0;
-                done <= 1;  // Signal transmission completion
+                done <= 1;  // Indicate transmission complete
             end
         end
     end
 endmodule
+
 
 
 
