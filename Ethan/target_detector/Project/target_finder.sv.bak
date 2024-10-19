@@ -1,0 +1,77 @@
+`timescale 1 ps / 1 ps
+
+module target_finder (
+    input  logic clk,                // Clock input
+    input  logic rst_n,              // Active-low reset
+    input  logic [16:0] addr,        // Address for BRAM (320x240 image)
+    output logic [11:0] pixel_out    // 12-bit RGB pixel output with bounding box
+);
+
+    logic [11:0] pixel_in;           // Pixel data from BRAM
+    logic [3:0] red_in, green_in, blue_in;
+    logic [9:0] min_x, max_x;        // X-coordinates of bounding box
+    logic [8:0] min_y, max_y;        // Y-coordinates of bounding box
+    logic found_object;              // Flag to indicate object detection
+
+    // Instantiate BRAM to fetch the image data
+    BRAM_IP bram_inst (
+        .clock(clk),
+        .rdaddress(addr),
+        .wraddress(17'd0),
+        .wren(1'b0),
+        .data(12'b0),
+        .q(pixel_in)
+    );
+
+    // Break down 12-bit pixel into Red, Green, Blue components
+    assign red_in   = pixel_in[11:8];
+    assign green_in = pixel_in[7:4];
+    assign blue_in  = pixel_in[3:0];
+
+    // Thresholds for detecting orange color
+    parameter logic [3:0] THRESH_R_MIN = 4'd10;
+    parameter logic [3:0] THRESH_R_MAX = 4'd15;
+    parameter logic [3:0] THRESH_G_MIN = 4'd5;
+    parameter logic [3:0] THRESH_G_MAX = 4'd10;
+    parameter logic [3:0] THRESH_B_MAX = 4'd4;
+
+    // Detect if the current pixel matches the orange color
+    logic is_orange;
+    assign is_orange = (red_in >= THRESH_R_MIN && red_in <= THRESH_R_MAX &&
+                        green_in >= THRESH_G_MIN && green_in <= THRESH_G_MAX &&
+                        blue_in <= THRESH_B_MAX);
+
+    // Track the bounding box coordinates
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            min_x <= 10'd319;
+            max_x <= 10'd0;
+            min_y <= 9'd239;
+            max_y <= 9'd0;
+            found_object <= 0;
+        end else if (is_orange) begin
+            // Update bounding box coordinates
+            if (addr[8:0] < min_y) min_y <= addr[8:0];
+            if (addr[8:0] > max_y) max_y <= addr[8:0];
+            if (addr[16:9] < min_x) min_x <= addr[16:9];
+            if (addr[16:9] > max_x) max_x <= addr[16:9];
+            found_object <= 1;
+        end
+    end
+
+    // Draw red bounding box or pass through original pixel
+    logic is_in_bbox;
+    assign is_in_bbox = (addr[8:0] == min_y || addr[8:0] == max_y || 
+                         addr[16:9] == min_x || addr[16:9] == max_x);
+
+    always_comb begin
+        if (found_object && is_in_bbox) begin
+            // Red bounding box (Red = max, Green = 0, Blue = 0)
+            pixel_out = 12'hF00;
+        end else begin
+            // Pass through original pixel
+            pixel_out = pixel_in;
+        end
+    end
+
+endmodule

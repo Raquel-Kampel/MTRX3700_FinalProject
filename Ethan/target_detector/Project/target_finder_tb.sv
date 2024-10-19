@@ -1,0 +1,80 @@
+`timescale 1 ps / 1 ps
+
+module target_finder_tb;
+
+    // Testbench signals
+    logic clk;
+    logic rst_n;
+    logic [16:0] addr;            // BRAM address for the 320x240 image
+    logic [11:0] pixel_out;       // Output pixel from target_finder
+    logic [11:0] pixel_in;        // Original pixel from BRAM
+
+    integer file;                 // File handler for output hex file
+
+    // Instantiate the target_finder module
+    target_finder dut (
+        .clk(clk),
+        .rst_n(rst_n),
+        .addr(addr),
+        .pixel_out(pixel_out)
+    );
+
+    // Access the pixel_in from BRAM inside target_finder
+    assign pixel_in = dut.pixel_in;
+
+    // Clock generation
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk; // Toggle clock every 5 ps (10 ps clock period)
+    end
+
+    // Test procedure
+    initial begin
+        // Reset the system
+        rst_n = 0;
+        #10;  // Hold reset for 10 ps
+        rst_n = 1;
+
+        // Open a file to write the output image in hexadecimal format
+        file = $fopen("orange_image.hex", "w");
+        if (file == 0) begin
+            $display("Error opening file.");
+            $finish;
+        end
+
+        // Iterate over all 76,800 pixels (320x240 image)
+        for (int i = 0; i < 76800; i++) begin
+            addr = i;  // Set the BRAM address
+
+            #10;  // Wait for pixel processing to ensure correct data read
+
+            // Display original and processed pixel values for debugging
+            if (pixel_out === 12'bx) begin
+                $display("Warning: Pixel output at Address %d is undefined (XXX).", addr);
+            end else begin
+                $display("Address: %d, Original Pixel: %03X, Processed Pixel: %03X", 
+                         addr, pixel_in, pixel_out);
+            end
+
+            // Write the processed pixel to the hex file
+            if (pixel_out !== 12'bx) begin
+                $fwrite(file, "%03X\n", pixel_out); // Write 12-bit RGB value in hex
+            end else begin
+                $fwrite(file, "000\n"); // Write 0 if the pixel value is undefined
+            end
+        end
+
+        // Close the hex file after writing all pixels
+        $fclose(file);
+
+        $stop; // End the simulation
+    end
+
+endmodule
+
+
+
+
+
+
+
