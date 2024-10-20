@@ -13,20 +13,14 @@ module top_level (
     input    AUD_ADCLRCK,
     output logic [17:0] LEDR
 );
-   localparam W        = 16;   // Bit-width for FFT input data
-   localparam NSamples = 1024; // Number of FFT points
+    localparam W        = 16;   // Bit-width for FFT input data
+    localparam NSamples = 1024; // Number of FFT points
 
     // Internal signals
     logic adc_clk;    // Clock for ADC
     logic i2c_clk;    // Clock for I2C interface
-    logic [8:0] angle_index;  // Current angle being scanned (0 to 359)
-    logic [W-1:0] fft_input_data;   // FFT input data (from the microphone)
-    logic fft_input_valid;          // FFT input valid signal
-    logic [W*2:0] loudness;         // Calculated loudness
-    logic loudness_valid;           // Valid signal for loudness
-    logic [W-1:0] loudness_array [0:359]; // Array to store loudness values for each angle
-    logic done;                     // Signal indicating when the scan is complete
-
+ 
+	 
     // PLL and clock generation
     adc_pll adc_pll_u (
         .areset(1'b0),
@@ -47,51 +41,57 @@ module top_level (
         .I2C_SDAT(I2C_SDAT)
     );
 
-    // Stream interface for audio input data
-    dstream #(.N(W)) audio_input ();
-
-    // Load microphone data (sample data from ADC)
+    
+	dstream #(.N(W))                audio_input ();
+   dstream #(.N($clog2(NSamples))) pitch_output ();
+	 
+	 // Define as input for loudness data output from FFT
+	// Assign the ADC clock to the output for AUD_XCK
+  
+	 
     mic_load #(.N(W)) u_mic_load (
-        .adclrc(AUD_ADCLRCK),
-        .bclk(AUD_BCLK),
-        .adcdat(AUD_ADCDAT),
-        .sample_data(audio_input.data),
-        .valid(audio_input.valid)
+    .adclrc(AUD_ADCLRCK),
+	 .bclk(AUD_BCLK),
+	 .adcdat(AUD_ADCDAT),
+    .sample_data(audio_input.data),
+	 .valid(audio_input.valid)
+   );
+	
+	assign AUD_XCK = adc_clk;
+	
+    fft_loudness_detect #(.W(W), .NSamples(NSamples)) DUT (
+	    .clk(adc_clk),
+		 .audio_clk(AUD_BCLK),
+		 .reset(resend),
+		 .audio_input(audio_input),
+		 .pitch_output(pitch_output)
     );
 
-    // Assign the ADC clock to the output for AUD_XCK
-    assign AUD_XCK = adc_clk;
+	logic [$clog2(NSamples)-1:0] display_value;
+	logic [3:0] mapped_value;  // 4-bit value between 1 and 16
 
-    // Instantiate FFT loudness detection module
-    fft_mag_sq #(.W(W), .NSamples(NSamples)) u_fft_mag_sq (
-        .clk(adc_clk),
-        .reset(~KEY[0]),
-        .fft_valid(audio_input.valid),
-        .fft_imag(audio_input.data),  // For simplicity, using the same audio input for both real and imaginary
-        .fft_real(audio_input.data),
-        .loudness(loudness),
-        .loudness_valid(loudness_valid)
-    );
+	// Linear Mapping from pitch_output.data to 1-16 range
+	always_ff @(posedge adc_clk) begin
+		if (pitch_output.valid) begin
+			display_value <= pitch_output.data;
+			// Mapped value calculation (from peak pitch range 0-300 to 1-16)
+			if (pitch_output.data >= 300) begin
+				mapped_value <= 4'd16;
+			end else begin
+				mapped_value <= ((pitch_output.data * 15) / 300) + 1;
+			end
+		end
+	end
+	
+	// Display the mapped value on HEX displays
+	display u_display (
+		.clk(adc_clk),
+		.value(mapped_value),  // Show mapped value (1-16) on the display
+		.display0(HEX0),
+		.display1(HEX1),
+		.display2(HEX2),
+		.display3(HEX3)
+	);
 
-    // Store loudness by angle (for a 360-degree scan)
-    store_loudness_by_angle_360 #(.W(W*2+9), .NAngles(360)) u_store_loudness_by_angle (
-        .clk(adc_clk),
-        .reset(~KEY[0]),
-        .loudness_valid(loudness_valid),
-        .loudness(loudness),
-        .angle_index(angle_index),  // This would typically come from a control module
-        .loudness_array(loudness_array),
-        .done(done)
-    );
-
-    // Display loudness value on HEX displays (example: display loudness for the current angle)
-    display u_display (
-        .clk(adc_clk),
-        .value(loudness),  // Displaying the current loudness value
-        .display0(HEX0),
-        .display1(HEX1),
-        .display2(HEX2),
-        .display3(HEX3)
-    );
 
 endmodule
