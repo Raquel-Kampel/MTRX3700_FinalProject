@@ -11,6 +11,11 @@ module top_level (
     logic start_latched, done;
     logic [17:0] led_data;
     logic sw_prev;
+    
+    // Detect control signals
+    logic [7:0] current_loudness;   // Loudness signal input (for example, from SW or another source)
+    logic [2:0] state_control;      // Control signal output from detect_control
+    logic stop_detect;              // Stop detection signal from detect_control
 
     // Assign KEY[0] to reset signal
     assign rst = ~KEY[0];  // Active-low reset
@@ -39,7 +44,6 @@ module top_level (
     json_to_uart_top uart_module (
         .clk(CLOCK_50),        // 50 MHz clock input
         .rst(rst),             // Reset signal from KEY[0]
-        .start(start_latched), // Start signal from latched value
         .GPIO_5(GPIO[5]),      // UART TX output to GPIO[5]
         .LEDR(led_data),       // LED data to LEDR
         .done(done)            // Transmission complete signal
@@ -48,8 +52,16 @@ module top_level (
     // Connect LED outputs
     assign LEDR = led_data;
 
+    // Loudness signal for testing (assign from switches or another input)
+    assign current_loudness = SW[7:0];  // Example: map switches SW[7:0] to current loudness
+
+    // Instantiate the `detect_control` module
+    detect_control detect_ctrl (
+        .clk(CLOCK_50),             // Clock input
+        .rst(rst),                  // Reset input
+        .current_loudness(current_loudness), // Incoming loudness value
+        .state_control(state_control), // Control signal output (3-bit state)
+        .stop_detect(stop_detect)    // Stop detection signal
+    );
+
 endmodule
-
-
-
-
