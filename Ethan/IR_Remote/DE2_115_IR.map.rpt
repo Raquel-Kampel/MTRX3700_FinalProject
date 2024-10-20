@@ -1,5 +1,5 @@
 Analysis & Synthesis report for DE2_115_IR
-Sun Oct 20 17:34:19 2024
+Sun Oct 20 18:06:39 2024
 Quartus Prime Version 20.1.0 Build 711 06/05/2020 SJ Lite Edition
 
 
@@ -44,7 +44,7 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Sun Oct 20 17:34:19 2024       ;
+; Analysis & Synthesis Status        ; Successful - Sun Oct 20 18:06:39 2024       ;
 ; Quartus Prime Version              ; 20.1.0 Build 711 06/05/2020 SJ Lite Edition ;
 ; Revision Name                      ; DE2_115_IR                                  ;
 ; Top-level Entity Name              ; ir_controller                               ;
@@ -262,10 +262,24 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 20.1.0 Build 711 06/05/2020 SJ Lite Edition
-    Info: Processing started: Sun Oct 20 17:34:11 2024
+    Info: Processing started: Sun Oct 20 18:06:31 2024
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE2_115_IR -c DE2_115_IR
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 12 of the 12 processors detected
+Info (12021): Found 1 design units, including 1 entities, in source file uart_tx_tb.sv
+    Info (12023): Found entity 1: uart_tx_tb File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/uart_tx_tb.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file uart_tx.sv
+    Info (12023): Found entity 1: uart_tx File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/uart_tx.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file top_level.sv
+    Info (12023): Found entity 1: top_level File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/top_level.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file json_uart_tb.sv
+    Info (12023): Found entity 1: json_uart_tb File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/json_uart_tb.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file json_to_uart_top_tb.sv
+    Info (12023): Found entity 1: json_to_uart_top_tb File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/json_to_uart_top_tb.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file json_to_uart_top.sv
+    Info (12023): Found entity 1: json_to_uart_top File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/json_to_uart_top.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file json_to_uart.sv
+    Info (12023): Found entity 1: json_to_uart File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/json_to_uart.sv Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file de2_115_ir.v
     Info (12023): Found entity 1: DE2_115_IR File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/DE2_115_IR.v Line: 44
 Info (12021): Found 1 design units, including 1 entities, in source file seg_hex.v
@@ -278,6 +292,8 @@ Info (12021): Found 1 design units, including 1 entities, in source file ir_cont
     Info (12023): Found entity 1: ir_controller File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/ir_controller.sv Line: 3
 Info (12021): Found 1 design units, including 1 entities, in source file ir_controller_tb.sv
     Info (12023): Found entity 1: ir_controller_tb File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/ir_controller_tb.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file integration_tb.sv
+    Info (12023): Found entity 1: integration_tb File: C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/integration_tb.sv Line: 3
 Info (12127): Elaborating entity "ir_controller" for the top level hierarchy
 Info (286030): Timing-Driven Synthesis is running
 Info (144001): Generated suppressed messages file C:/Users/eglyn/Documents/MTRX3700/Assignment3/IR_Remote/DE2_115_IR.map.smsg
@@ -314,9 +330,9 @@ Info (21057): Implemented 45 device resources after synthesis - the final resour
     Info (21061): Implemented 7 logic cells
 Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 26 warnings
     Info: Peak virtual memory: 4783 megabytes
-    Info: Processing ended: Sun Oct 20 17:34:19 2024
+    Info: Processing ended: Sun Oct 20 18:06:39 2024
     Info: Elapsed time: 00:00:08
-    Info: Total CPU time (on all processors): 00:00:11
+    Info: Total CPU time (on all processors): 00:00:10
 
 
 +------------------------------------------+
