@@ -1,0 +1,2 @@
+Warning (10268): Verilog HDL information at classification.sv(18): always construct contains both blocking and non-blocking assignments File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/classification.sv Line: 18
+Info (10281): Verilog HDL Declaration information at i2c_master.sv(9): object "reg_addr" differs only in case from object "REG_ADDR" in the same scope File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/i2c_master.sv Line: 9
