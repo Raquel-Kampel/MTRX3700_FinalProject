@@ -1,7 +1,7 @@
 module json_to_uart_top(
     input  logic clk,
     input  logic rst,               // Reset button (e.g., KEY[0])
-    input  logic start,             // Start signal from switch (e.g., SW[0])
+    //input  logic start,             // Start signal from switch (e.g., SW[0])
 	 input  logic [2:0] state_control, // External input for state control (3 bits)
     output logic GPIO_5,            // UART TX data on GPIO[5]
     output logic [17:0] LEDR,       // LEDs to display transmitted bytes and status
@@ -199,7 +199,8 @@ module json_to_uart_top(
     always_ff @(posedge clk or posedge rst) begin
         if (rst) begin
             current_state <= STOP;  // Start with STOP state
-        end else if (start) begin
+        end 
+		  else begin
             current_state <= next_state;
         end
     end
@@ -224,22 +225,30 @@ module json_to_uart_top(
             data_valid <= 0;
             done <= 0;
             delay_counter <= DELAY_COUNT;
-        end else if (start && !transmitting) begin
+        end 
+		  
+		  else if (!transmitting) begin
             transmitting <= 1;
             byte_index <= json_len - 1;  // Start from the last byte
             data_valid <= 0;
             done <= 0;
             delay_counter <= DELAY_COUNT;
-        end else if (transmitting) begin
+        end 
+		  
+		  else if (transmitting) begin
             if (delay_counter > 0) begin
                 delay_counter <= delay_counter - 1;
-            end else if (uart_ready && !data_valid) begin
+            end 
+				
+				else if (uart_ready && !data_valid) begin
                 // Send the next byte when UART is ready
                 data_out <= json_flat[byte_index * 8 +: 8];
                 data_valid <= 1;
                 byte_index <= byte_index - 1;  // Decrement index for correct order
                 delay_counter <= DELAY_COUNT;
-            end else if (data_valid && uart_ready) begin
+            end 
+				
+				else if (data_valid && uart_ready) begin
                 data_valid <= 0;  // Wait for UART to consume the data
             end
 
