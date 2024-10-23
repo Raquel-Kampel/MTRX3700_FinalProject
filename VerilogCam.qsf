@@ -1198,6 +1198,22 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_r[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_r[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_r[0]
 set_global_assignment -name SEARCH_PATH "c:\\intelfpga_lite\\projects\\testing\\cam\\xmicrophone\\r22sdf"
+set_global_assignment -name SYSTEMVERILOG_FILE xFSM/FSM.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/uart_tx_tb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/uart_tx.sv
+set_global_assignment -name VERILOG_FILE xIR/IR_Remote/SEG_HEX.v
+set_global_assignment -name VERILOG_FILE xIR/IR_Remote/pll1.v
+set_global_assignment -name QIP_FILE xIR/IR_Remote/pll1.qip
+set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/json_uart_tb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/json_to_uart_top_tb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/json_to_uart_top.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/json_to_uart.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/IR_top_level.sv
+set_global_assignment -name VERILOG_FILE xIR/IR_Remote/IR_RECEIVE_Terasic.v
+set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/ir_controller_tb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/ir_controller.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/integration_tb.sv
+set_global_assignment -name VERILOG_FILE xIR/IR_Remote/DE2_115_IR.v
 set_global_assignment -name SYSTEMVERILOG_FILE top_level.sv
 set_global_assignment -name SYSTEMVERILOG_FILE xMICROPHONE/mic/fft_pitch_detect_tb.sv
 set_global_assignment -name SYSTEMVERILOG_FILE xMICROPHONE/mic/fft_pitch_detect.sv

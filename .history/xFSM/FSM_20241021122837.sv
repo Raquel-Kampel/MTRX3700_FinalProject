@@ -1,0 +1,73 @@
+module FSM (
+    input logic [7:0] IR_button,
+    input logic [2:0] CAM_direction,
+    input logic [1:0] speed
+);
+
+// ~ State Definitions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+typedef enum logic [1:0] { 
+    IDLE = 2'b00,           // Setting initial drive mode
+    CAM   = 2'b01,
+    IR  = 2'b10
+} state;
+state current_state, next_state;
+
+typedef enum logic [1:0] { 
+    SEARCH = 2'b00,         // Setting sub-states for CAM
+    FOLLOW = 2'b01,
+    PAUSE  = 2'b11
+} CAM_state;
+CAM_state current_CAM_state, next_CAM_state;
+
+typedef enum logic [2:0] { 
+    STOP   = 3'b000,        // Setting global drive state
+    LEFT   = 3'b001,
+    RIGHT  = 3'b010,
+    SLOW   = 3'b011,
+    MEDIUM = 3'b100,
+    FAST   = 3'b101
+} drive_state;
+drive current_drive_state, next_drive_state;
+
+// ~ State Setter ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+always_comb begin
+    case(current_state)
+
+        IDLE: next_state = (IR_button == 8'h0f) ? CAM : (IR_button == 8'h13) ? IR   : IDLE;
+        CAM:  next_state = (IR_button == 8'h13) ? IR  : (IR_button == 8'h10) ? IDLE : CAM;
+        IR:   next_state = (IR_button == 8'h0f) ? CAM : (IR_button == 8'h10) ? IDLE : IR;
+
+    endcase
+
+    case(current_CAM_state)
+
+        SEARCH: next_CAM_state = (next_state != CAM) ? PAUSE : (orange_detected)   ? FOLLOW : SEARCH;
+        FOLLOW: next_CAM_state = (next_state != CAM) ? PAUSE : (!orange_detected)  ? SEARCH : FOLLOW;
+        PAUSE:  next_CAM_state = (next_state == CAM) ? SEARCH : PAUSE;
+
+    endcase   
+
+    next_drive_state = (next_CAM_state == SEARCH) ? RIGHT :
+                       (next_CAM_state == FOLLOW && CAM_direction == 3'b010) ? RIGHT :
+                       (next_CAM_state == FOLLOW && CAM_direction == 3'b001) ? LEFT :
+                       (next_CAM_state == FOLLOW && CAM_direction == 3'b011 && speed == 2'b00) ? SLOW :
+                       (next_CAM_state == FOLLOW && CAM_direction == 3'b011 && speed == 2'b01) ? MEDIUM :
+                       (next_CAM_state == FOLLOW && CAM_direction == 3'b011 && speed == 2'b10) ? FAST : STOP;
+end
+
+always_ff @(posedge clk_50)begin
+    if (current_state != next_state || current_CAM_state != next_CAM_state) begin
+        reset = 1;
+    end
+    else begin
+        reset = 0;
+    end
+    current_state <= next_state;
+    current_CAM_state <= next_CAM_state;
+    current_drive_state <= next_drive_state;
+end
+
+
+endmodule 

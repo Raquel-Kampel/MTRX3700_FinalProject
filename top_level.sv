@@ -37,7 +37,7 @@
 // no timescale needed
 
 module top_level(
-  // CAMERA
+  // ~ CAM ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   input wire        clk_50,
   input wire        btn_resend,
   output wire       led_config_finished,
@@ -59,49 +59,62 @@ module top_level(
   output wire       ov7670_pwdn,
   output wire       ov7670_reset,
 
-  // MIC
+  // ~ MIC ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   output 	      I2C_SCLK,
   inout 	      I2C_SDAT,
   output  [6:0] HEX0,
   output  [6:0] HEX1,
   output  [6:0] HEX2,
   output  [6:0] HEX3,
+  output  [6:0] HEX4,
+  output  [6:0] HEX6,
+  output  [6:0] HEX7,
   input 		    AUD_ADCDAT,
   input         AUD_BCLK,
   output        AUD_XCK,
   input         AUD_ADCLRCK,
 
-  // PERIPHERALS
+  // ~ IR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  input         IRDA_RXD,         
+
+  // ~ PERIPHERALS ~~~~~~~~~~~~~~~~~~~~~~
   output wire [17:0] LEDR,
   output wire [7:1]  LEDG
 );
 
+// ~ Reset ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+logic reset;
 assign resend =  ~btn_resend;
-logic [3:0] mapped_value;  // 4-bit value between 1 and 16
 
-mic_top_level u_mic_top_level (
-    // Pins
-    .CLOCK_50(clk_50),
-    .resend(resend),
-    .I2C_SCLK(I2C_SCLK),
-    .I2C_SDAT(I2C_SDAT),
-    .AUD_ADCDAT(AUD_ADCDAT),
-    .AUD_BCLK(AUD_BCLK),
-    .AUD_XCK(AUD_XCK),
-    .AUD_ADCLRCK(AUD_ADCLRCK),
-    .mapped_value(mapped_value));
+// ~ DISPLAY ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Display the mapped value on HEX displays
-display u_display (
-    .clk(AUD_XCK),
-    .value(mapped_value),  // Show mapped value (1-16) on the display
-    .display0(HEX0),
-    .display1(HEX1),
-    .display2(HEX2),
-    .display3(HEX3)
-);
+// ~ IR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+logic [7:0] IR_button;
 
-// DE2-115 board has an Altera Cyclone V E, which has ALTPLL's'
+IR_top_level u_IR_top_level (
+  .resend(reset),
+  .clk_50(clk_50),
+  .IRDA_RXD(IRDA_RXD),
+  .IR_button(IR_button));
+
+// ~ AUDIO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//logic [3:0] mapped_value;  // 4-bit value between 1 and 16
+//logic [1:0] speed;
+
+// // mic_top_level u_mic_top_level (
+// //     // Pins
+// //     .CLOCK_50(clk_50),
+// //     .resend(resend),
+// //     .I2C_SCLK(I2C_SCLK),
+// //     .I2C_SDAT(I2C_SDAT),
+// //     .AUD_ADCDAT(AUD_ADCDAT),
+// //     .AUD_BCLK(AUD_BCLK),
+// //     .AUD_XCK(AUD_XCK),
+// //     .AUD_ADCLRCK(AUD_ADCLRCK),
+// //     .mapped_value(mapped_value),
+// //     .speed(speed));
+
+// ~ CAMERA ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 wire clk_50_camera;
 wire clk_25_vga;
 wire wren;
@@ -119,6 +132,8 @@ wire [7:0] red_O; wire [7:0] green_O; wire [7:0] blue_O;
 
 wire activeArea;
 wire is_orange;
+wire orange_detected;
+logic [2:0] direction;
 
 assign vga_r = red_O[7:0];
 assign vga_g = green_O[7:0];
@@ -134,7 +149,7 @@ my_altpll Inst_vga_pll(
 assign vga_vsync = vSync;
 assign vga_blank_N = nBlank;
 
-VGA Inst_VGA(
+VGA Inst_VGA (
   .CLK25(clk_25_vga),
   .clkout(vga_CLK),
   .Hsync(vga_hsync),
@@ -143,7 +158,7 @@ VGA Inst_VGA(
   .Nsync(vga_sync_N),
   .activeArea(activeArea));
 
-ov7670_controller Inst_ov7670_controller(
+ov7670_controller Inst_ov7670_controller (
   .clk(clk_50_camera),
   .resend(resend),
   .config_finished(led_config_finished),
@@ -153,7 +168,7 @@ ov7670_controller Inst_ov7670_controller(
   .pwdn(ov7670_pwdn),
   .xclk(ov7670_xclk));
 
-ov7670_capture Inst_ov7670_capture(
+ov7670_capture Inst_ov7670_capture (
   .pclk(ov7670_pclk),
   .vsync(ov7670_vsync),
   .href(ov7670_href),
@@ -162,7 +177,7 @@ ov7670_capture Inst_ov7670_capture(
   .dout(wrdata),
   .we(wren));
 
-frame_buffer Inst_frame_buffer(
+frame_buffer Inst_frame_buffer (
   .rdaddress(rdaddress),
   .rdclock(clk_25_vga),
   .q(rddata),
@@ -171,14 +186,14 @@ frame_buffer Inst_frame_buffer(
   .data(wrdata),
   .wren(wren));
 
-RGB Inst_RGB(
+RGB Inst_RGB (
   .Din(rddata),
   .Nblank(activeArea),
   .R(red),
   .G(green),
   .B(blue));
 
-Address_Generator Inst_Address_Generator(
+Address_Generator Inst_Address_Generator (
   .CLK25(clk_25_vga),
   .enable(activeArea),
   .vsync(vSync),
@@ -195,15 +210,33 @@ target_finder get_orange (
   .blue_out(blue_O),          // blue pixels    
   .is_orange(is_orange));
 
-classification classifier(
+classification classifier (
   .clk(clk_25_vga),
   .red(red),
   .green(green),
   .blue(blue),
-  .HREF(vga_hsync),
+  .HREF(activeArea),
+  .fast(fast),
   .is_orange(is_orange),
-  .direction(LEDG[4:3]),
-  .orangeDetected(LEDG[7]));
+  .direction(direction),
+  .orangeDetected(orange_detected),
+  .orange_count(LEDR));
 
+FSM u_FSM (
+  .clk_50(clk_50),
+  .IR_button(IR_button),
+  .CAM_direction(direction),
+  .speed(speed),
+  .orange_detected(orange_detected),
+  .reset(reset),
+  .state(),
+  .CAM_state(),
+  .drive_state(),
+  .HEX7(HEX7),
+  .HEX6(HEX6),
+  .HEX4(HEX4));
+
+assign LEDG[1] = orange_detected;
+assign LEDG[7:5] = direction;
 
 endmodule
