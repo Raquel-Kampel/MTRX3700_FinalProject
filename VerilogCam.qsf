@@ -1244,4 +1244,5 @@ set_global_assignment -name SYSTEMVERILOG_FILE xMICROPHONE/mic/mic_load.sv
 set_global_assignment -name VERILOG_FILE xMICROPHONE/mic/i2c_pll.v
 set_global_assignment -name SYSTEMVERILOG_FILE xMICROPHONE/mic/i2c_master.sv
 set_global_assignment -name VERILOG_FILE xMICROPHONE/mic/adc_pll.v
+set_global_assignment -name EDA_SIMULATION_TOOL "<None>"
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

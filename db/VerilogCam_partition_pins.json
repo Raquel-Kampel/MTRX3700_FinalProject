@@ -100,11 +100,103 @@
 					"strict" : false
 				},
 				{
-					"name" : "ov7670_xclk",
+					"name" : "I2C_SCLK",
 					"strict" : false
 				},
 				{
-					"name" : "ov7670_sioc",
+					"name" : "HEX0[0]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX0[1]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX0[2]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX0[3]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX0[4]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX0[5]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX0[6]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX1[0]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX1[1]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX1[2]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX1[3]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX1[4]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX1[5]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX1[6]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX2[0]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX2[1]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX2[2]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX2[3]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX3[0]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX3[2]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX3[3]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX3[4]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX3[5]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX3[6]",
 					"strict" : false
 				},
 				{
@@ -184,62 +276,6 @@
 					"strict" : false
 				},
 				{
-					"name" : "LEDR[4]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[5]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[6]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[7]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[8]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[9]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[10]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[11]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[12]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[13]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[14]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[15]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[16]",
-					"strict" : false
-				},
-				{
-					"name" : "LEDR[17]",
-					"strict" : false
-				},
-				{
 					"name" : "LEDG[1]",
 					"strict" : false
 				},
@@ -252,11 +288,67 @@
 					"strict" : false
 				},
 				{
-					"name" : "ov7670_siod",
+					"name" : "I2C_SDAT",
 					"strict" : false
 				},
 				{
-					"name" : "ov7670_pclk",
+					"name" : "GPIO[5]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[12]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[13]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[14]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[15]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[16]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[17]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[18]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[19]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[20]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[21]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[22]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[23]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[24]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO[25]",
 					"strict" : false
 				},
 				{
@@ -268,47 +360,19 @@
 					"strict" : false
 				},
 				{
-					"name" : "ov7670_vsync",
-					"strict" : false
-				},
-				{
-					"name" : "ov7670_href",
-					"strict" : false
-				},
-				{
-					"name" : "ov7670_data[4]",
-					"strict" : false
-				},
-				{
-					"name" : "ov7670_data[2]",
-					"strict" : false
-				},
-				{
-					"name" : "ov7670_data[3]",
-					"strict" : false
-				},
-				{
-					"name" : "ov7670_data[7]",
-					"strict" : false
-				},
-				{
-					"name" : "ov7670_data[1]",
-					"strict" : false
-				},
-				{
-					"name" : "ov7670_data[0]",
-					"strict" : false
-				},
-				{
-					"name" : "ov7670_data[5]",
-					"strict" : false
-				},
-				{
-					"name" : "ov7670_data[6]",
-					"strict" : false
-				},
-				{
 					"name" : "IRDA_RXD",
+					"strict" : false
+				},
+				{
+					"name" : "AUD_BCLK",
+					"strict" : false
+				},
+				{
+					"name" : "AUD_ADCLRCK",
+					"strict" : false
+				},
+				{
+					"name" : "AUD_ADCDAT",
 					"strict" : false
 				}
 			]
