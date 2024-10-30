@@ -32,7 +32,7 @@ module json_to_uart_top(
     // Update JSON command based on current state
     always_comb begin
         case (state_control)
-            3'b001: begin
+            3'b001: begin // LEFT
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -48,8 +48,8 @@ module json_to_uart_top(
 						  8'h2D,  // '-'
 						  8'h30,  // '0'
 						  8'h2E,  // '.'
-						  8'h32,  // '0'
-						  8'h35,  // '1'
+						  8'h30,  // '0'
+						  8'h31,  // '1'
 						  8'h2C,  // ','
 						  8'h22,  // '"'
 						  8'h52,  // 'R'
@@ -57,14 +57,14 @@ module json_to_uart_top(
 						  8'h3A,  // ':'
 						  8'h30,  // '0'
 						  8'h2E,  // '.'
-						  8'h32,  // '0'
-						  8'h35,  // '1'
+						  8'h30,  // '0'
+						  8'h31,  // '1'
 						  8'h7D,  // '}'
 						  8'h0A   // '\n' (newline character)
 					 };
                 json_len = 27;  
             end
-            3'b010: begin
+            3'b010: begin // RIGHT
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -79,8 +79,8 @@ module json_to_uart_top(
 						  8'h3A,  // ':'
 						  8'h30,  // '0'
 						  8'h2E,  // '.'
-						  8'h32,  // '0'
-						  8'h35,  // '1'
+						  8'h30,  // '0'
+						  8'h31,  // '1'
 						  8'h2C,  // ','
 						  8'h22,  // '"'
 						  8'h52,  // 'R'
@@ -89,14 +89,14 @@ module json_to_uart_top(
 						  8'h2D,  // '-'
 						  8'h30,  // '0'
 						  8'h2E,  // '.'
-						  8'h32,  // '0'
-						  8'h35,  // '1'
+						  8'h30,  // '0'
+						  8'h31,  // '1'
 						  8'h7D,  // '}'
 						  8'h0A   // '\n' (newline character)
 					 };
                 json_len = 27;  
             end
-            3'b101: begin
+            3'b101: begin // FORWARD FAST
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -126,7 +126,7 @@ module json_to_uart_top(
 					 
                 json_len = 24;  
             end
-            3'b100: begin
+            3'b100: begin //FORWARD MEDIUM
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -157,7 +157,7 @@ module json_to_uart_top(
 					 };
                 json_len = 26;  
             end
-            3'b011: begin
+            3'b011: begin //FORWARD SLOW
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -172,7 +172,7 @@ module json_to_uart_top(
 						  8'h3A,  // ':'
 						  8'h30,  // '0'
 						  8'h2E,  // '.'
-						  8'h32,  // '0'
+						  8'h30,  // '0'
 						  8'h35,  // '5'
 						  8'h2C,  // ','
 						  8'h22,  // '"'
@@ -181,14 +181,14 @@ module json_to_uart_top(
 						  8'h3A,  // ':'
 						  8'h30,  // '0'
 						  8'h2E,  // '.'
-						  8'h32,  // '0'
+						  8'h30,  // '0'
 						  8'h35,  // '5'
 						  8'h7D,  // '}'
 						  8'h0A   // '\n' (newline character)
 					 };
                 json_len = 26;  
 			end			
-            3'b000: begin
+            3'b000: begin //STOP
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -213,7 +213,7 @@ module json_to_uart_top(
 					 };
                 json_len = 20;  // Set length accordingly
             end
-			default: begin
+			default: begin //STOP
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
