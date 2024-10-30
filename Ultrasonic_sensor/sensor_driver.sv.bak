@@ -1,0 +1,119 @@
+module sensor_driver#(parameter ten_us = 10'd500)(
+    input clk,
+    input rst,
+    input measure,
+    input echo,
+    output trig,
+    output [11:0] distance,
+    output [4:0] debug_leds,  // Debug output for LEDs
+    output [9:0] counter_debug // Debug output for counter
+);
+
+    localparam IDLE = 3'b000,
+               TRIGGER = 3'b010,
+               WAIT = 3'b011,
+               COUNTECHO = 3'b100,
+               DISPLAY_DISTANCE = 3'b101;
+
+    wire inIDLE, inTRIGGER, inWAIT, inCOUNTECHO, inDISPLAY;
+    reg [24:0] counter;
+    reg [21:0] distanceRAW = 0;
+    reg [34:0] distanceRAW_in_cm = 0;
+    wire trigcountDONE;
+
+    logic [2:0] state = IDLE;
+
+    // State decoding for debugging
+    assign inIDLE = (state == IDLE);
+    assign inTRIGGER = (state == TRIGGER);
+    assign inWAIT = (state == WAIT);
+    assign inCOUNTECHO = (state == COUNTECHO);
+    assign inDISPLAY = (state == DISPLAY_DISTANCE);
+
+    // Assign LEDs to states for debugging
+    assign debug_leds[0] = inIDLE;
+    assign debug_leds[1] = inTRIGGER;
+    assign debug_leds[2] = inWAIT;
+    assign debug_leds[3] = inCOUNTECHO;
+    assign debug_leds[4] = inDISPLAY;
+
+    // Output counter for debugging
+    assign counter_debug = counter;
+
+    // State transitions (simplified for debugging)
+    always @(posedge clk or posedge rst) begin
+    if (rst) begin
+        state <= IDLE;
+    end else begin
+        case (state)
+            IDLE: begin
+                if (measure) state <= TRIGGER;
+            end
+            TRIGGER: begin
+                if (trigcountDONE) state <= WAIT;  // Transition to WAIT when trigcountDONE is high
+            end
+            WAIT: begin
+                if (echo) state <= COUNTECHO;  // Transition to COUNTECHO when echo goes high
+            end
+            COUNTECHO: begin
+                state <= DISPLAY_DISTANCE;
+            end
+            DISPLAY_DISTANCE: begin
+                state <= IDLE;
+            end
+        endcase
+    end
+end
+
+
+    // Trigger output
+    assign trig = inTRIGGER;
+
+always @(posedge clk) begin
+    if (inIDLE || trigcountDONE) begin
+        counter <= 25'd0;
+    end else if (inTRIGGER) begin
+        counter <= counter + 1;
+    end
+end
+
+assign trigcountDONE = (counter == ten_us);  // Check if counter reaches 500
+ 
+    // Distance measurement
+    always @(posedge clk) begin
+        if (inWAIT) begin
+            distanceRAW <= 22'd0;
+        end else if (inCOUNTECHO) begin
+            distanceRAW <= distanceRAW + 1;
+        end
+    end
+
+    // Calculate distance in cm
+    always @(posedge clk) begin
+        if (inDISPLAY) begin
+            distanceRAW_in_cm <= distanceRAW * 32'h1648;
+        end
+    end
+
+    assign distance = distanceRAW_in_cm[34:24];
+
+endmodule
+
+
+// timer used to measure distance at 250ms intervals - not used in top level
+module refresher250ms(
+  input clk,
+  input en,
+  output measure);
+  reg [24:0] counter;
+
+  assign measure = (counter == 25'd1);
+
+  always@(posedge clk)
+    begin
+      if(~en | (counter == 25'd12_500_000))
+        counter <= 25'd0;
+      else
+        counter <= 25'd1 + counter;
+    end
+endmodule

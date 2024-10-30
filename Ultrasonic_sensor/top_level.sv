@@ -1,51 +1,44 @@
 module top_level(
-    input CLOCK_50,
-    inout [35:0] GPIO,
-    input [3:0] KEY,
-    output [17:0] LEDR  // LED outputs
+    input CLOCK_50,          // 50 MHz system clock input
+    inout [35:0] GPIO,       // General Purpose I/O pins for external connections
+    input [3:0] KEY,         // 4 push buttons (active low)
+    output [7:0] LEDR        // 8-bit LED output to display distance
 );
 
-logic reset;
-logic echo, trigger;
-logic [11:0] distance;
-logic [4:0] debug_leds;  // LEDs for debugging states
-logic [9:0] counter_debug; // Counter value for debugging
+logic start, reset;          // Logic signals for start and reset edges
+logic echo, trigger;         // Echo and trigger signals for sensor communication
 
-// GPIO connections
+// Assign GPIO[34] as the input echo signal from the sensor
+assign echo = GPIO[34];      
+// Assign GPIO[35] as the output trigger signal to the sensor
 assign GPIO[35] = trigger;
 
-// Debounce reset button only
+// Instantiate debounce logic for the start button (KEY[3])
+// Generates a clean pulse when the button is pressed
+debounce start_edge(
+    .clk(CLOCK_50), 
+    .button(!KEY[3]),    // Active low button input
+    .button_edge(start)  // Output pulse on button press
+);
+
+// Instantiate debounce logic for the reset button (KEY[2])
+// Generates a clean pulse when the button is pressed
 debounce reset_edge(
-    .clk(CLOCK_50),
-    .button(!KEY[2]),
-    .button_edge(reset)
+    .clk(CLOCK_50), 
+    .button(!KEY[2]),    // Active low button input
+    .button_edge(reset)  // Output pulse on button press
 );
 
-// Set measure to high for continuous readings
-logic measure = 1'b1;
-
-// Force echo high for testing
-assign echo = 1'b1;  // Force echo high to check if WAIT transitions
-
-// Instantiate the sensor driver with debug LEDs
+// Instantiate the sensor driver module
+// This module handles triggering, echo reception, and distance calculation
 sensor_driver u0(
-    .clk(CLOCK_50),
-    .rst(reset),
-    .measure(measure),
-    .echo(echo),
-    .trig(trigger),
-    .distance(distance),
-    .debug_leds(debug_leds),    // Connect state debug LEDs
-    .counter_debug(counter_debug)  // Connect counter debug
+    .clk(CLOCK_50),      // System clock input
+    .rst(reset),         // Reset signal input
+    .measure(start),     // Start measurement signal input
+    .echo(echo),         // Echo signal input from the sensor
+    .trig(trigger),      // Trigger signal output to the sensor
+    .distance(LEDR)      // Output distance displayed on the LEDs
 );
-
-// Map debug LEDs to LEDR[4:0] to observe each state
-assign LEDR[4:0] = debug_leds;
-
-// Use LEDR[5] to display the trigger signal for additional debugging
-assign LEDR[5] = trigger;
-
-// Display `counter_debug` on LEDR[15:6] for testing
-assign LEDR[15:6] = counter_debug;
 
 endmodule
+
