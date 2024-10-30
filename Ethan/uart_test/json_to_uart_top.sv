@@ -1,23 +1,13 @@
 module json_to_uart_top(
     input  logic clk,
     input  logic rst,               // Reset button (e.g., KEY[0])
-    //input  logic start,             // Start signal from switch (e.g., SW[0])
-	 input  logic [2:0] state_control, // External input for state control (3 bits)
+    //input  logic transmitting,             // Start signal from switch (e.g., SW[0])
+	input  logic [2:0] state_control, // External input for state control (3 bits)
     output logic GPIO_5,            // UART TX data on GPIO[5]
     output logic [17:0] LEDR,       // LEDs to display transmitted bytes and status
-    output logic done               // Transmission complete signal
+    output logic done,
+	output logic [7:0] json_len_test               // Transmission complete signal
 );
-
-    // State declarations
-    typedef enum logic [2:0] {
-        LEFT = 3'b001,
-        RIGHT = 3'b010,
-        FAST = 3'b011,
-        SLOW = 3'b100,
-        STOP = 3'b000
-    } state_t;
-    
-    state_t current_state, next_state;
 
     // Internal signals
     logic uart_out;
@@ -25,8 +15,8 @@ module json_to_uart_top(
     logic [7:0] data_out;
     logic data_valid;
     logic [7:0] byte_index;             // Track current byte index
-    logic transmitting;
     logic [31:0] delay_counter;
+	logic transmitting;
 
     // Parameters
     parameter CLK_FREQ_HZ = 50_000_000;  
@@ -41,8 +31,8 @@ module json_to_uart_top(
 
     // Update JSON command based on current state
     always_comb begin
-        case (current_state)
-            LEFT: begin
+        case (state_control)
+            3'b001: begin // LEFT
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -55,11 +45,11 @@ module json_to_uart_top(
 						  8'h4C,  // 'L'
 						  8'h22,  // '"'
 						  8'h3A,  // ':'
-						  8'h96,  // '-'
+						  8'h2D,  // '-'
 						  8'h30,  // '0'
 						  8'h2E,  // '.'
-						  8'h32,  // '2'
-						  8'h35,  // '5'
+						  8'h30,  // '0'
+						  8'h31,  // '1'
 						  8'h2C,  // ','
 						  8'h22,  // '"'
 						  8'h52,  // 'R'
@@ -67,14 +57,14 @@ module json_to_uart_top(
 						  8'h3A,  // ':'
 						  8'h30,  // '0'
 						  8'h2E,  // '.'
-						  8'h32,  // '2'
-						  8'h35,  // '5'
+						  8'h30,  // '0'
+						  8'h31,  // '1'
 						  8'h7D,  // '}'
 						  8'h0A   // '\n' (newline character)
 					 };
                 json_len = 27;  
             end
-            RIGHT: begin
+            3'b010: begin // RIGHT
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -89,24 +79,24 @@ module json_to_uart_top(
 						  8'h3A,  // ':'
 						  8'h30,  // '0'
 						  8'h2E,  // '.'
-						  8'h32,  // '2'
-						  8'h35,  // '5'
+						  8'h30,  // '0'
+						  8'h31,  // '1'
 						  8'h2C,  // ','
 						  8'h22,  // '"'
 						  8'h52,  // 'R'
 						  8'h22,  // '"'
 						  8'h3A,  // ':'
-						  8'h96,  // '-'
+						  8'h2D,  // '-'
 						  8'h30,  // '0'
 						  8'h2E,  // '.'
-						  8'h32,  // '2'
-						  8'h35,  // '5'
+						  8'h30,  // '0'
+						  8'h31,  // '1'
 						  8'h7D,  // '}'
 						  8'h0A   // '\n' (newline character)
 					 };
                 json_len = 27;  
             end
-            FAST: begin
+            3'b101: begin // FORWARD FAST
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -136,7 +126,7 @@ module json_to_uart_top(
 					 
                 json_len = 24;  
             end
-            SLOW: begin
+            3'b100: begin //FORWARD MEDIUM
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -167,7 +157,38 @@ module json_to_uart_top(
 					 };
                 json_len = 26;  
             end
-            STOP: begin
+            3'b011: begin //FORWARD SLOW
+					 json_flat = {
+						  8'h7B,  // '{'
+						  8'h22,  // '"'
+						  8'h54,  // 'T'
+						  8'h22,  // '"'
+						  8'h3A,  // ':'
+						  8'h31,  // '1'
+						  8'h2C,  // ','
+						  8'h22,  // '"'
+						  8'h4C,  // 'L'
+						  8'h22,  // '"'
+						  8'h3A,  // ':'
+						  8'h30,  // '0'
+						  8'h2E,  // '.'
+						  8'h30,  // '0'
+						  8'h35,  // '5'
+						  8'h2C,  // ','
+						  8'h22,  // '"'
+						  8'h52,  // 'R'
+						  8'h22,  // '"'
+						  8'h3A,  // ':'
+						  8'h30,  // '0'
+						  8'h2E,  // '.'
+						  8'h30,  // '0'
+						  8'h35,  // '5'
+						  8'h7D,  // '}'
+						  8'h0A   // '\n' (newline character)
+					 };
+                json_len = 26;  
+			end			
+            3'b000: begin //STOP
 					 json_flat = {
 						  8'h7B,  // '{'
 						  8'h22,  // '"'
@@ -192,30 +213,35 @@ module json_to_uart_top(
 					 };
                 json_len = 20;  // Set length accordingly
             end
+			default: begin //STOP
+					 json_flat = {
+						  8'h7B,  // '{'
+						  8'h22,  // '"'
+						  8'h54,  // 'T'
+						  8'h22,  // '"'
+						  8'h3A,  // ':'
+						  8'h31,  // '1'
+						  8'h2C,  // ','
+						  8'h22,  // '"'
+						  8'h4C,  // 'L'
+						  8'h22,  // '"'
+						  8'h3A,  // ':'
+						  8'h30,  // '0'
+						  8'h2C,  // ','
+						  8'h22,  // '"'
+						  8'h52,  // 'R'
+						  8'h22,  // '"'
+						  8'h3A,  // ':'
+						  8'h30,  // '0'
+						  8'h7D,  // '}'
+						  8'h0A   // '\n' (newline character)
+					 };
+                json_len = 20;  // Set length accordingly
+			end
         endcase
     end
 
-    // FSM state transition logic
-    always_ff @(posedge clk or posedge rst) begin
-        if (rst) begin
-            current_state <= STOP;  // Start with STOP state
-        end 
-		  else begin
-            current_state <= next_state;
-        end
-    end
-
-    // Logic to determine next state based on external state_control input
-    always_comb begin
-        case (state_control)
-            3'b001: next_state = LEFT;
-            3'b010: next_state = RIGHT;
-            3'b011: next_state = FAST;
-            3'b100: next_state = SLOW;
-            3'b000: next_state = STOP;
-            default: next_state = STOP;
-        endcase
-    end
+	assign json_len_test = json_len;
 
     // UART transmission and FSM for handling the transmission
     always_ff @(posedge clk or posedge rst) begin
@@ -227,7 +253,7 @@ module json_to_uart_top(
             delay_counter <= DELAY_COUNT;
         end 
 		  
-		  else if (!transmitting) begin
+		else if (!transmitting) begin
             transmitting <= 1;
             byte_index <= json_len - 1;  // Start from the last byte
             data_valid <= 0;
@@ -235,8 +261,9 @@ module json_to_uart_top(
             delay_counter <= DELAY_COUNT;
         end 
 		  
-		  else if (transmitting) begin
-            if (delay_counter > 0) begin
+		else if (transmitting) begin
+            
+			if (delay_counter > 0) begin
                 delay_counter <= delay_counter - 1;
             end 
 				
@@ -275,11 +302,5 @@ module json_to_uart_top(
 
     // Assign the UART TX output to GPIO_5
     assign GPIO_5 = uart_out;
-
-    // Display the transmitted byte and status on LEDs
-    assign LEDR[7:0] = data_out;      // Show transmitted byte on LEDs 7:0
-    assign LEDR[15:8] = byte_index;   // Show byte index on LEDs 15:8
-    assign LEDR[16] = transmitting;   // Transmission status
-    assign LEDR[17] = done;           // Transmission complete status
 
 endmodule
