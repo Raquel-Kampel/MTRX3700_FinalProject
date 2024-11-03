@@ -1,12 +1,17 @@
 
 State Machine - |top_level|FSM:u_FSM|current_drive_state
-Name current_drive_state.FAST current_drive_state.MEDIUM current_drive_state.SLOW current_drive_state.RIGHT current_drive_state.LEFT current_drive_state.STOP 
-current_drive_state.STOP 0 0 0 0 0 0 
-current_drive_state.LEFT 0 0 0 0 1 1 
-current_drive_state.RIGHT 0 0 0 1 0 1 
-current_drive_state.SLOW 0 0 1 0 0 1 
-current_drive_state.MEDIUM 0 1 0 0 0 1 
-current_drive_state.FAST 1 0 0 0 0 1 
+Name current_drive_state.HARD_R current_drive_state.HARD_L current_drive_state.RREVERSE current_drive_state.LREVERSE current_drive_state.REVERSE current_drive_state.FAST current_drive_state.MEDIUM current_drive_state.SLOW current_drive_state.RIGHT current_drive_state.LEFT current_drive_state.STOP 
+current_drive_state.STOP 0 0 0 0 0 0 0 0 0 0 0 
+current_drive_state.LEFT 0 0 0 0 0 0 0 0 0 1 1 
+current_drive_state.RIGHT 0 0 0 0 0 0 0 0 1 0 1 
+current_drive_state.SLOW 0 0 0 0 0 0 0 1 0 0 1 
+current_drive_state.MEDIUM 0 0 0 0 0 0 1 0 0 0 1 
+current_drive_state.FAST 0 0 0 0 0 1 0 0 0 0 1 
+current_drive_state.REVERSE 0 0 0 0 1 0 0 0 0 0 1 
+current_drive_state.LREVERSE 0 0 0 1 0 0 0 0 0 0 1 
+current_drive_state.RREVERSE 0 0 1 0 0 0 0 0 0 0 1 
+current_drive_state.HARD_L 0 1 0 0 0 0 0 0 0 0 1 
+current_drive_state.HARD_R 1 0 0 0 0 0 0 0 0 0 1 
 
 State Machine - |top_level|FSM:u_FSM|current_CAM_state
 Name current_CAM_state.FOLLOW current_CAM_state.PAUSE current_CAM_state.SEARCH 

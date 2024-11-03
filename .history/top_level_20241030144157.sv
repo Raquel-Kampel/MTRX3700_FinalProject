@@ -1,0 +1,302 @@
+// File digital_cam_impl1/top_level.vhd translated with vhd2vl v3.0 VHDL to Verilog RTL translator
+// vhd2vl settings:
+//  * Verilog Module Declaration Style: 2001
+
+// vhd2vl is Free (libre) Software:
+//   Copyright (C) 2001 Vincenzo Liguori - Ocean Logic Pty Ltd
+//     http://www.ocean-logic.com
+//   Modifications Copyright (C) 2006 Mark Gonzales - PMC Sierra Inc
+//   Modifications (C) 2010 Shankar Giri
+//   Modifications Copyright (C) 2002-2017 Larry Doolittle
+//     http://doolittle.icarus.com/~larry/vhd2vl/
+//   Modifications (C) 2017 Rodrigo A. Melo
+//
+//   vhd2vl comes with ABSOLUTELY NO WARRANTY.  Always check the resulting
+//   Verilog for correctness, ideally with a formal verification tool.
+//
+//   You are welcome to redistribute vhd2vl under certain conditions.
+//   See the license (GPLv2) file included with the source for details.
+
+// The result of translation follows.  Its copyright status should be
+// considered unchanged from the original VHDL.
+
+// cristinel ababei; Jan.29.2015; CopyLeft (CL);
+// code name: "digital cam implementation #1";
+// project done using Quartus II 13.1 and tested on DE2-115;
+//
+// this design basically connects a CMOS camera (OV7670 module) to
+// DE2-115 board; video frames are picked up from camera, buffered
+// on the FPGA (using embedded RAM), and displayed on the VGA monitor,
+// which is also connected to the board; clock signals generated
+// inside FPGA using ALTPLL's that take as input the board's 50MHz signal
+// from on-board oscillator; 
+//
+// this whole project is an adaptation of Mike Field's original implementation 
+// that can be found here:
+// http://hamsterworks.co.nz/mediawiki/index.php/OV7670_camera
+// no timescale needed
+
+module top_level(
+  // ~ CAM ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  input wire        clk_50,
+  input wire        btn_resend,
+  output wire       led_config_finished,
+  output wire       vga_hsync,
+  output wire       vga_vsync,
+  output wire [7:0] vga_r,
+  output wire [7:0] vga_g,
+  output wire [7:0] vga_b,
+  output wire       vga_blank_N,
+  output wire       vga_sync_N,
+  output wire       vga_CLK,
+
+  // ~ MIC ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  output 	      I2C_SCLK,
+  inout 	      I2C_SDAT,
+  output  [6:0] HEX0,
+  output  [6:0] HEX1,
+  output  [6:0] HEX2,
+  output  [6:0] HEX3,
+  output  [6:0] HEX4,
+  output  [6:0] HEX6,
+  output  [6:0] HEX7,
+  input 		    AUD_ADCDAT,
+  input         AUD_BCLK,
+  output        AUD_XCK,
+  input         AUD_ADCLRCK,
+
+  // ~ IR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  input         IRDA_RXD,         
+
+  // ~ PERIPHERALS ~~~~~~~~~~~~~~~~~~~~~~
+  output wire [17:0] LEDR,
+  output wire [7:1]  LEDG,
+
+  // ~ FRAME INTERFACE ~~~~~~~~~~~~~~~~~~
+  inout wire [35:0] GPIO             
+
+);
+
+// ~ Reset ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+logic reset;
+assign resend =  ~btn_resend;
+
+// ~ DISPLAY ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~ Ultrasonic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// US_top_level u_US_top_level (
+//     .CLOCK_50(clk_50),          // 50 MHz system clock input
+//     .GPIO(GPIO),       // General Purpose I/O pins for external connections
+//     .KEY(KEY),         // 4 push buttons (active low)
+//     .LEDR(LEDR)        // 8-bit LED output to display distance
+// );
+logic start;//, reset;          // Logic signals for start and reset edges
+logic echo, trigger;         // Echo and trigger signals for sensor communication
+
+// Assign GPIO[34] as the input echo signal from the sensor
+assign echo = GPIO[34];      
+// Assign GPIO[35] as the output trigger signal to the sensor
+assign GPIO[35] = trigger;
+
+// Instantiate debounce logic for the start button (KEY[3])
+// Generates a clean pulse when the button is pressed
+debounce start_edge(
+    .clk(clk_50), 
+    .button(!KEY[3]),    // Active low button input
+    .button_edge(start)  // Output pulse on button press
+);
+
+// Instantiate debounce logic for the reset button (KEY[2])
+// Generates a clean pulse when the button is pressed
+debounce reset_edge(
+    .clk(clk_50), 
+    .button(!KEY[2]),    // Active low button input
+    .button_edge(reset)  // Output pulse on button press
+);
+
+// Instantiate the sensor driver module
+// This module handles triggering, echo reception, and distance calculation
+sensor_driver u0(
+    .clk(CLOCK_50),      // System clock input
+    .rst(reset),         // Reset signal input
+    .measure(start),     // Start measurement signal input
+    .echo(echo),         // Echo signal input from the sensor
+    .trig(trigger),      // Trigger signal output to the sensor
+    .distance(LEDR)      // Output distance displayed on the LEDs
+);
+// ~ IR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+logic [7:0] IR_button;
+
+IR_top_level u_IR_top_level (
+  .resend(reset),
+  .clk_50(clk_50),
+  .IRDA_RXD(IRDA_RXD),
+  .IR_button(IR_button));
+
+// ~ AUDIO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// logic [3:0] mapped_value;  // 4-bit value between 1 and 16
+// logic [1:0] speed;
+
+// mic_top_level u_mic_top_level (
+//     // Pins
+//     .CLOCK_50(clk_50),
+//     .resend(resend),
+//     .I2C_SCLK(I2C_SCLK),
+//     .I2C_SDAT(I2C_SDAT),
+//     .AUD_ADCDAT(AUD_ADCDAT),
+//     .AUD_BCLK(AUD_BCLK),
+//     .AUD_XCK(AUD_XCK),
+//     .AUD_ADCLRCK(AUD_ADCLRCK),
+//     .mapped_value(mapped_value),
+//     .speed(speed));
+
+// assign LEDR = mapped_value;
+
+// ~ CAMERA ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+wire ov7670_pclk; assign ov7670_pclk  = GPIO[21];
+wire ov7670_xclk; assign GPIO[20]     = ov7670_xclk;
+wire ov7670_vsync;assign ov7670_vsync = GPIO[23];
+wire ov7670_href; assign ov7670_href  = GPIO[22];
+wire [7:0] ov7670_data; assign ov7670_data  = GPIO[19:12];
+wire ov7670_sioc; assign GPIO[25]     = ov7670_sioc;
+wire ov7670_siod; assign GPIO[24]     = ov7670_siod;
+wire ov7670_pwdn;
+wire ov7670_reset;assign GPIO[11]     = ov7670_reset;
+
+wire clk_50_camera;
+wire clk_25_vga;
+wire wren;
+wire resend;
+wire nBlank;
+wire vSync;
+
+wire [16:0] wraddress;
+wire [11:0] wrdata;
+wire [16:0] rdaddress;
+wire [11:0] rddata;
+
+wire [7:0] red; wire [7:0] green; wire [7:0] blue;
+wire [7:0] red_O; wire [7:0] green_O; wire [7:0] blue_O;
+
+wire activeArea;
+wire is_orange;
+wire orange_detected;
+logic [2:0] direction;
+logic [3:0] drive_state;
+
+assign vga_r = red_O[7:0];
+assign vga_g = green_O[7:0];
+assign vga_b = blue_O[7:0];
+
+my_altpll Inst_vga_pll(
+  .inclk0(clk_50),
+  .c0(clk_50_camera),
+  .c1(clk_25_vga));
+
+// take the inverted push button because KEY0 on DE2-115 board generates
+// a signal 111000111; with 1 with not pressed and 0 when pressed/pushed;
+assign vga_vsync = vSync;
+assign vga_blank_N = nBlank;
+
+VGA Inst_VGA (
+  .CLK25(clk_25_vga),
+  .clkout(vga_CLK),
+  .Hsync(vga_hsync),
+  .Vsync(vSync),
+  .Nblank(nBlank),
+  .Nsync(vga_sync_N),
+  .activeArea(activeArea));
+
+ov7670_controller Inst_ov7670_controller (
+  .clk(clk_50_camera),
+  .resend(resend),
+  .config_finished(led_config_finished),
+  .sioc(ov7670_sioc),
+  .siod(ov7670_siod),
+  .reset(ov7670_reset),
+  .pwdn(ov7670_pwdn),
+  .xclk(ov7670_xclk));
+
+ov7670_capture Inst_ov7670_capture (
+  .pclk(ov7670_pclk),
+  .vsync(ov7670_vsync),
+  .href(ov7670_href),
+  .d(ov7670_data),
+  .addr(wraddress),
+  .dout(wrdata),
+  .we(wren));
+
+frame_buffer Inst_frame_buffer (
+  .rdaddress(rdaddress),
+  .rdclock(clk_25_vga),
+  .q(rddata),
+  .wrclock(ov7670_pclk),
+  .wraddress(wraddress[16:0]),
+  .data(wrdata),
+  .wren(wren));
+
+RGB Inst_RGB (
+  .Din(rddata),
+  .Nblank(activeArea),
+  .R(red),
+  .G(green),
+  .B(blue));
+
+Address_Generator Inst_Address_Generator (
+  .CLK25(clk_25_vga),
+  .enable(activeArea),
+  .vsync(vSync),
+  .address(rdaddress));
+
+target_finder get_orange (
+  .clk(clk_25_vga),                // Clock input
+  .rst_n(resend),              // Active-low reset
+  .red_in(red),           // red pixels
+  .green_in(green),         // green pixels
+  .blue_in(blue),          // blue pixels
+  .red_out(red_O),           // red pixels
+  .green_out(green_O),         // green pixels
+  .blue_out(blue_O),          // blue pixels    
+  .is_orange(is_orange));
+
+classification classifier (
+  .clk(clk_25_vga),
+  .red(red),
+  .green(green),
+  .blue(blue),
+  .HREF(activeArea),
+  .fast(fast),
+  .is_orange(is_orange),
+  .direction(direction),
+  .orangeDetected(orange_detected),
+  .orange_count()); // LEDR
+
+FSM u_FSM (
+  .clk_50(clk_50),
+  .IR_button(IR_button),
+  .CAM_direction(direction),
+  .speed(speed),
+  .orange_detected(orange_detected),
+  .reset(reset),
+  .state(),
+  .CAM_state(),
+  .drive_state(drive_state),
+  .HEX7(HEX7),
+  .HEX6(HEX6),
+  .HEX4(HEX4),
+  .HEX3(HEX3),
+  .HEX2(HEX2),
+  .HEX1(HEX1),
+  .HEX0(HEX0));
+
+json_to_uart_top u_json_to_uart_top(
+ .clk(clk_50),
+ .rst(resend),               // Reset button (e.g., KEY[0])
+	.state_control(drive_state), // External input for state control (3 bits)
+ .GPIO_5(GPIO[5]),            // UART TX data on GPIO[5]
+ .json_len_test(),
+ .done());
+  
+assign LEDG[1] = orange_detected;
+assign LEDG[7:5] = direction;
+
+endmodule

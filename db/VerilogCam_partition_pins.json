@@ -176,6 +176,18 @@
 					"strict" : false
 				},
 				{
+					"name" : "HEX2[4]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX2[5]",
+					"strict" : false
+				},
+				{
+					"name" : "HEX2[6]",
+					"strict" : false
+				},
+				{
 					"name" : "HEX3[0]",
 					"strict" : false
 				},

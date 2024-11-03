@@ -1198,6 +1198,14 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_r[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_r[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_r[0]
 set_global_assignment -name SEARCH_PATH "c:\\intelfpga_lite\\projects\\testing\\cam\\xmicrophone\\r22sdf"
+set_global_assignment -name EDA_SIMULATION_TOOL "<None>"
+set_global_assignment -name SYSTEMVERILOG_FILE xUltrasonic/US_top_level.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xUltrasonic/sensor_driver_tb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xUltrasonic/sensor_driver.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xUltrasonic/led_display.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xUltrasonic/distance_checker_tb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xUltrasonic/distance_checker.sv
+set_global_assignment -name SYSTEMVERILOG_FILE xUltrasonic/debounce.sv
 set_global_assignment -name SYSTEMVERILOG_FILE xFSM/FSM.sv
 set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/uart_tx_tb.sv
 set_global_assignment -name SYSTEMVERILOG_FILE xIR/IR_Remote/uart_tx.sv
@@ -1244,5 +1252,4 @@ set_global_assignment -name SYSTEMVERILOG_FILE xMICROPHONE/mic/mic_load.sv
 set_global_assignment -name VERILOG_FILE xMICROPHONE/mic/i2c_pll.v
 set_global_assignment -name SYSTEMVERILOG_FILE xMICROPHONE/mic/i2c_master.sv
 set_global_assignment -name VERILOG_FILE xMICROPHONE/mic/adc_pll.v
-set_global_assignment -name EDA_SIMULATION_TOOL "<None>"
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -1,15 +1,15 @@
-Fitter Status : Successful - Wed Oct 30 01:21:52 2024
+Fitter Status : Successful - Wed Oct 30 23:04:52 2024
 Quartus Prime Version : 20.1.0 Build 711 06/05/2020 SJ Lite Edition
 Revision Name : VerilogCam
 Top-level Entity Name : top_level
 Family : Cyclone IV E
 Device : EP4CE115F29C7
 Timing Models : Final
-Total logic elements : 10,314 / 114,480 ( 9 % )
-    Total combinational functions : 9,440 / 114,480 ( 8 % )
-    Dedicated logic registers : 2,394 / 114,480 ( 2 % )
-Total registers : 2394
-Total pins : 149 / 529 ( 28 % )
+Total logic elements : 10,324 / 114,480 ( 9 % )
+    Total combinational functions : 9,473 / 114,480 ( 8 % )
+    Dedicated logic registers : 2,399 / 114,480 ( 2 % )
+Total registers : 2399
+Total pins : 152 / 529 ( 29 % )
 Total virtual pins : 0
 Total memory bits : 1,613,216 / 3,981,312 ( 41 % )
 Embedded Multiplier 9-bit elements : 176 / 532 ( 33 % )
