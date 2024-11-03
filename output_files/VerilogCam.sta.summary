@@ -1,0 +1,353 @@
+------------------------------------------------------------
+Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'AUD_BCLK'
+Slack : -23.667
+TNS   : -2199.408
+
+Type  : Slow 1200mV 85C Model Setup 'FSM:u_FSM|reset'
+Slack : -4.611
+TNS   : -17.593
+
+Type  : Slow 1200mV 85C Model Setup 'GPIO[21]'
+Slack : -4.365
+TNS   : -2034.960
+
+Type  : Slow 1200mV 85C Model Setup 'clk_50'
+Slack : -4.208
+TNS   : -141.907
+
+Type  : Slow 1200mV 85C Model Setup 'mic_top_level:u_mic_top_level|mic_load:u_mic_load|valid'
+Slack : -1.528
+TNS   : -21.395
+
+Type  : Slow 1200mV 85C Model Setup 'u_mic_top_level|adc_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 6.167
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Setup 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 14.243
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Setup 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 21.198
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Setup 'u_mic_top_level|i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 49997.394
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'u_mic_top_level|adc_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.344
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'clk_50'
+Slack : 0.385
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.402
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'u_mic_top_level|i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.403
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.404
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'AUD_BCLK'
+Slack : 0.413
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'GPIO[21]'
+Slack : 0.440
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'mic_top_level:u_mic_top_level|mic_load:u_mic_load|valid'
+Slack : 0.989
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'FSM:u_FSM|reset'
+Slack : 2.715
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Recovery 'clk_50'
+Slack : 0.147
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Removal 'clk_50'
+Slack : -0.161
+TNS   : -6.628
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'GPIO[21]'
+Slack : -3.210
+TNS   : -1635.205
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'AUD_BCLK'
+Slack : -3.000
+TNS   : -2748.817
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'mic_top_level:u_mic_top_level|mic_load:u_mic_load|valid'
+Slack : 0.374
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'FSM:u_FSM|reset'
+Slack : 0.470
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'clk_50'
+Slack : 9.679
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 9.705
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 19.709
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'u_mic_top_level|adc_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 26.732
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'u_mic_top_level|i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 24999.703
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'AUD_BCLK'
+Slack : -21.284
+TNS   : -1867.748
+
+Type  : Slow 1200mV 0C Model Setup 'FSM:u_FSM|reset'
+Slack : -4.147
+TNS   : -15.891
+
+Type  : Slow 1200mV 0C Model Setup 'GPIO[21]'
+Slack : -3.934
+TNS   : -1806.651
+
+Type  : Slow 1200mV 0C Model Setup 'clk_50'
+Slack : -3.726
+TNS   : -124.094
+
+Type  : Slow 1200mV 0C Model Setup 'mic_top_level:u_mic_top_level|mic_load:u_mic_load|valid'
+Slack : -1.570
+TNS   : -22.115
+
+Type  : Slow 1200mV 0C Model Setup 'u_mic_top_level|adc_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 10.816
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 14.734
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 22.665
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'u_mic_top_level|i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 49997.609
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'clk_50'
+Slack : 0.338
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'u_mic_top_level|adc_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.340
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.354
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'u_mic_top_level|i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.355
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.356
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'AUD_BCLK'
+Slack : 0.387
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'GPIO[21]'
+Slack : 0.387
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'mic_top_level:u_mic_top_level|mic_load:u_mic_load|valid'
+Slack : 1.057
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'FSM:u_FSM|reset'
+Slack : 2.535
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Recovery 'clk_50'
+Slack : 0.228
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Removal 'clk_50'
+Slack : -0.176
+TNS   : -7.320
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'GPIO[21]'
+Slack : -3.210
+TNS   : -1591.999
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'AUD_BCLK'
+Slack : -3.000
+TNS   : -2708.865
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'mic_top_level:u_mic_top_level|mic_load:u_mic_load|valid'
+Slack : 0.468
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'FSM:u_FSM|reset'
+Slack : 0.474
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'clk_50'
+Slack : 9.685
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 9.708
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 19.709
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'u_mic_top_level|adc_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 26.767
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'u_mic_top_level|i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 24999.705
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'AUD_BCLK'
+Slack : -11.287
+TNS   : -924.625
+
+Type  : Fast 1200mV 0C Model Setup 'FSM:u_FSM|reset'
+Slack : -1.960
+TNS   : -7.463
+
+Type  : Fast 1200mV 0C Model Setup 'clk_50'
+Slack : -1.920
+TNS   : -60.613
+
+Type  : Fast 1200mV 0C Model Setup 'GPIO[21]'
+Slack : -1.766
+TNS   : -764.784
+
+Type  : Fast 1200mV 0C Model Setup 'mic_top_level:u_mic_top_level|mic_load:u_mic_load|valid'
+Slack : -0.289
+TNS   : -2.933
+
+Type  : Fast 1200mV 0C Model Setup 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 17.166
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 30.409
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'u_mic_top_level|adc_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 30.803
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'u_mic_top_level|i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 49998.756
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'u_mic_top_level|adc_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.137
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'AUD_BCLK'
+Slack : 0.148
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'clk_50'
+Slack : 0.173
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.182
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'u_mic_top_level|i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.182
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.184
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'GPIO[21]'
+Slack : 0.186
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'mic_top_level:u_mic_top_level|mic_load:u_mic_load|valid'
+Slack : 0.316
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'FSM:u_FSM|reset'
+Slack : 1.410
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Recovery 'clk_50'
+Slack : 0.222
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Removal 'clk_50'
+Slack : -0.052
+TNS   : -2.078
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'AUD_BCLK'
+Slack : -3.000
+TNS   : -1951.260
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'GPIO[21]'
+Slack : -3.000
+TNS   : -962.596
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'mic_top_level:u_mic_top_level|mic_load:u_mic_load|valid'
+Slack : 0.288
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'FSM:u_FSM|reset'
+Slack : 0.420
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'clk_50'
+Slack : 9.244
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 9.779
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'Inst_vga_pll|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 19.752
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'u_mic_top_level|adc_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 26.881
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'u_mic_top_level|i2c_pll_u|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 24999.772
+TNS   : 0.000
+
+------------------------------------------------------------
