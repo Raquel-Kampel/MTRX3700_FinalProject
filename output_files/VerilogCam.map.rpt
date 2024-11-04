@@ -1,5 +1,5 @@
 Analysis & Synthesis report for VerilogCam
-Wed Oct 30 23:03:26 2024
+Mon Nov 04 23:27:52 2024
 Quartus Prime Version 20.1.0 Build 711 06/05/2020 SJ Lite Edition
 
 
@@ -225,7 +225,7 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Wed Oct 30 23:03:26 2024       ;
+; Analysis & Synthesis Status        ; Successful - Mon Nov 04 23:27:52 2024       ;
 ; Quartus Prime Version              ; 20.1.0 Build 711 06/05/2020 SJ Lite Edition ;
 ; Revision Name                      ; VerilogCam                                  ;
 ; Top-level Entity Name              ; top_level                                   ;
@@ -344,10 +344,11 @@ https://fpgasoftware.intel.com/eula.
 ;     Processor 2            ;   0.1%      ;
 ;     Processor 3            ;   0.1%      ;
 ;     Processor 4            ;   0.1%      ;
-;     Processor 5            ;   0.0%      ;
-;     Processor 6            ;   0.0%      ;
-;     Processor 7            ;   0.0%      ;
-;     Processors 8-12        ;   0.0%      ;
+;     Processor 5            ;   0.1%      ;
+;     Processor 6            ;   0.1%      ;
+;     Processor 7            ;   0.1%      ;
+;     Processor 8            ;   0.1%      ;
+;     Processors 9-12        ;   0.1%      ;
 +----------------------------+-------------+
 
 
@@ -12322,15 +12323,15 @@ Note: In order to hide this table in the UI and the text report file, please set
 +---------------------------------------+--------------------------------------------------------------------------------------------------------+
 
 
-+----------------------------------------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "json_to_uart_top:u_json_to_uart_top"                                                                              ;
-+---------------+--------+----------+----------------------------------------------------------------------------------------------------------+
-; Port          ; Type   ; Severity ; Details                                                                                                  ;
-+---------------+--------+----------+----------------------------------------------------------------------------------------------------------+
-; json_len_test ; Output ; Info     ; Explicitly unconnected                                                                                   ;
-; done          ; Output ; Info     ; Explicitly unconnected                                                                                   ;
-; LEDR          ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
-+---------------+--------+----------+----------------------------------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "json_to_uart_top:u_json_to_uart_top"                                                                                       ;
++---------------+---------+------------------+----------------------------------------------------------------------------------------------------------+
+; Port          ; Type    ; Severity         ; Details                                                                                                  ;
++---------------+---------+------------------+----------------------------------------------------------------------------------------------------------+
+; json_len_test ; Unknown ; Critical Warning ; Named port was not declared by the instantiated entity                                                   ;
+; done          ; Output  ; Info             ; Explicitly unconnected                                                                                   ;
+; LEDR          ; Output  ; Warning          ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
++---------------+---------+------------------+----------------------------------------------------------------------------------------------------------+
 
 
 +------------------------------------------------------------------------------------------------------------------------------------------+
@@ -12514,7 +12515,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:49     ;
+; Top            ; 00:00:55     ;
 +----------------+--------------+
 
 
@@ -12524,7 +12525,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 20.1.0 Build 711 06/05/2020 SJ Lite Edition
-    Info: Processing started: Wed Oct 30 23:02:16 2024
+    Info: Processing started: Mon Nov 04 23:26:42 2024
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off VerilogCam -c VerilogCam
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 12 of the 12 processors detected
@@ -12619,7 +12620,7 @@ Info (12021): Found 1 design units, including 1 entities, in source file xutils/
     Info (12023): Found entity 1: dstream File: C:/intelFPGA_lite/projects/TESTING/CAM/xUtils/dstream.sv Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file xutils/display.sv
     Info (12023): Found entity 1: display File: C:/intelFPGA_lite/projects/TESTING/CAM/xUtils/display.sv Line: 1
-Warning (10229): Verilog HDL Expression warning at mic_top_level.sv(53): truncated literal to match 4 bits File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 53
+Warning (10229): Verilog HDL Expression warning at mic_top_level.sv(56): truncated literal to match 4 bits File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 56
 Info (12021): Found 1 design units, including 1 entities, in source file xmicrophone/mic_top_level.sv
     Info (12023): Found entity 1: mic_top_level File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file xmicrophone/mic/set_audio_encoder.sv
@@ -12632,14 +12633,14 @@ Info (12021): Found 1 design units, including 1 entities, in source file xmicrop
     Info (12023): Found entity 1: i2c_master File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/i2c_master.sv Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file xmicrophone/mic/adc_pll.v
     Info (12023): Found entity 1: adc_pll File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/adc_pll.v Line: 40
-Warning (10236): Verilog HDL Implicit Net warning at top_level.sv(229): created implicit net for "fast" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 229
+Warning (10236): Verilog HDL Implicit Net warning at top_level.sv(239): created implicit net for "fast" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 239
 Info (12127): Elaborating entity "top_level" for the top level hierarchy
 Warning (10034): Output port "LEDG[4..2]" at top_level.sv(73) has no driver File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 73
-Info (12128): Elaborating entity "IR_top_level" for hierarchy "IR_top_level:u_IR_top_level" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 95
+Info (12128): Elaborating entity "IR_top_level" for hierarchy "IR_top_level:u_IR_top_level" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 94
 Info (12128): Elaborating entity "IR_RECEIVE" for hierarchy "IR_top_level:u_IR_top_level|IR_RECEIVE:ir_receiver" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/IR_top_level.sv Line: 20
-Info (12128): Elaborating entity "mic_top_level" for hierarchy "mic_top_level:u_mic_top_level" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 112
-Warning (10036): Verilog HDL or VHDL warning at mic_top_level.sv(46): object "display_value" assigned a value but never read File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 46
-Warning (10230): Verilog HDL assignment warning at mic_top_level.sv(55): truncated value with size 32 to match size of target (4) File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 55
+Info (12128): Elaborating entity "mic_top_level" for hierarchy "mic_top_level:u_mic_top_level" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 116
+Warning (10036): Verilog HDL or VHDL warning at mic_top_level.sv(48): object "display_value" assigned a value but never read File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 48
+Warning (10230): Verilog HDL assignment warning at mic_top_level.sv(58): truncated value with size 32 to match size of target (4) File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 58
 Info (12128): Elaborating entity "adc_pll" for hierarchy "mic_top_level:u_mic_top_level|adc_pll:adc_pll_u" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 20
 Info (12128): Elaborating entity "altpll" for hierarchy "mic_top_level:u_mic_top_level|adc_pll:adc_pll_u|altpll:altpll_component" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/adc_pll.v Line: 104
 Info (12130): Elaborated megafunction instantiation "mic_top_level:u_mic_top_level|adc_pll:adc_pll_u|altpll:altpll_component" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/adc_pll.v Line: 104
@@ -12776,7 +12777,7 @@ Warning (10034): Output port "read_data" at i2c_master.sv(15) has no driver File
 Warning (10034): Output port "read_valid" at i2c_master.sv(16) has no driver File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/i2c_master.sv Line: 16
 Info (12128): Elaborating entity "dstream" for hierarchy "mic_top_level:u_mic_top_level|dstream:audio_input" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 29
 Info (12128): Elaborating entity "dstream" for hierarchy "mic_top_level:u_mic_top_level|dstream:pitch_output" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 30
-Info (12128): Elaborating entity "mic_load" for hierarchy "mic_top_level:u_mic_top_level|mic_load:u_mic_load" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 37
+Info (12128): Elaborating entity "mic_load" for hierarchy "mic_top_level:u_mic_top_level|mic_load:u_mic_load" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 38
 Warning (10240): Verilog HDL Always Construct warning at mic_load.sv(34): inferring latch(es) for variable "sample_data", which holds its previous value in one or more paths through the always construct File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/mic_load.sv Line: 34
 Info (10041): Inferred latch for "sample_data[0]" at mic_load.sv(34) File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/mic_load.sv Line: 34
 Info (10041): Inferred latch for "sample_data[1]" at mic_load.sv(34) File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/mic_load.sv Line: 34
@@ -12794,7 +12795,7 @@ Info (10041): Inferred latch for "sample_data[12]" at mic_load.sv(34) File: C:/i
 Info (10041): Inferred latch for "sample_data[13]" at mic_load.sv(34) File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/mic_load.sv Line: 34
 Info (10041): Inferred latch for "sample_data[14]" at mic_load.sv(34) File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/mic_load.sv Line: 34
 Info (10041): Inferred latch for "sample_data[15]" at mic_load.sv(34) File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/mic_load.sv Line: 34
-Info (12128): Elaborating entity "fft_pitch_detect" for hierarchy "mic_top_level:u_mic_top_level|fft_pitch_detect:DUT" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 44
+Info (12128): Elaborating entity "fft_pitch_detect" for hierarchy "mic_top_level:u_mic_top_level|fft_pitch_detect:DUT" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 46
 Info (12128): Elaborating entity "dstream" for hierarchy "mic_top_level:u_mic_top_level|fft_pitch_detect:DUT|dstream:conv_input" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/fft_pitch_detect.sv Line: 25
 Info (12128): Elaborating entity "low_pass_conv" for hierarchy "mic_top_level:u_mic_top_level|fft_pitch_detect:DUT|low_pass_conv:u_anti_alias_filter" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/fft_pitch_detect.sv Line: 35
 Warning (10036): Verilog HDL or VHDL warning at convolusion.sv(51): object "overflow" assigned a value but never read File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/convolusion.sv Line: 51
@@ -12896,7 +12897,7 @@ Info (12128): Elaborating entity "DelayBuffer" for hierarchy "mic_top_level:u_mi
 Info (12128): Elaborating entity "fft_mag_sq" for hierarchy "mic_top_level:u_mic_top_level|fft_pitch_detect:DUT|fft_mag_sq:u_fft_mag_sq" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/fft_pitch_detect.sv Line: 69
 Info (12128): Elaborating entity "fft_find_peak" for hierarchy "mic_top_level:u_mic_top_level|fft_pitch_detect:DUT|fft_find_peak:u_fft_find_peak" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/fft_pitch_detect.sv Line: 79
 Warning (10230): Verilog HDL assignment warning at fft_find_peak.sv(51): truncated value with size 32 to match size of target (10) File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic/fft_find_peak.sv Line: 51
-Info (12128): Elaborating entity "my_altpll" for hierarchy "my_altpll:Inst_vga_pll" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 155
+Info (12128): Elaborating entity "my_altpll" for hierarchy "my_altpll:Inst_vga_pll" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 167
 Info (12128): Elaborating entity "altpll" for hierarchy "my_altpll:Inst_vga_pll|altpll:altpll_component" File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/my_altpll.v Line: 82
 Info (12130): Elaborated megafunction instantiation "my_altpll:Inst_vga_pll|altpll:altpll_component" File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/my_altpll.v Line: 82
 Info (12133): Instantiated megafunction "my_altpll:Inst_vga_pll|altpll:altpll_component" with the following parameter: File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/my_altpll.v Line: 82
@@ -12961,18 +12962,18 @@ Info (12133): Instantiated megafunction "my_altpll:Inst_vga_pll|altpll:altpll_co
 Info (12021): Found 1 design units, including 1 entities, in source file db/my_altpll_altpll.v
     Info (12023): Found entity 1: my_altpll_altpll File: C:/intelFPGA_lite/projects/TESTING/CAM/db/my_altpll_altpll.v Line: 30
 Info (12128): Elaborating entity "my_altpll_altpll" for hierarchy "my_altpll:Inst_vga_pll|altpll:altpll_component|my_altpll_altpll:auto_generated" File: c:/intelfpga_lite/20.1/quartus/libraries/megafunctions/altpll.tdf Line: 898
-Info (12128): Elaborating entity "VGA" for hierarchy "VGA:Inst_VGA" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 169
+Info (12128): Elaborating entity "VGA" for hierarchy "VGA:Inst_VGA" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 179
 Warning (10230): Verilog HDL assignment warning at vga.v(74): truncated value with size 32 to match size of target (10) File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/vga.v Line: 74
 Warning (10230): Verilog HDL assignment warning at vga.v(81): truncated value with size 32 to match size of target (10) File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/vga.v Line: 81
-Info (12128): Elaborating entity "ov7670_controller" for hierarchy "ov7670_controller:Inst_ov7670_controller" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 179
+Info (12128): Elaborating entity "ov7670_controller" for hierarchy "ov7670_controller:Inst_ov7670_controller" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 189
 Info (12128): Elaborating entity "i2c_sender" for hierarchy "ov7670_controller:Inst_ov7670_controller|i2c_sender:Inst_i2c_sender" File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/ov7670_controller.v Line: 58
 Warning (10230): Verilog HDL assignment warning at i2c_sender.v(65): truncated value with size 32 to match size of target (8) File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/i2c_sender.v Line: 65
 Warning (10230): Verilog HDL assignment warning at i2c_sender.v(191): truncated value with size 32 to match size of target (8) File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/i2c_sender.v Line: 191
 Info (12128): Elaborating entity "ov7670_registers" for hierarchy "ov7670_controller:Inst_ov7670_controller|ov7670_registers:Inst_ov7670_registers" File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/ov7670_controller.v Line: 70
 Warning (10230): Verilog HDL assignment warning at ov7670_registers.v(68): truncated value with size 32 to match size of target (8) File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/ov7670_registers.v Line: 68
-Info (12128): Elaborating entity "ov7670_capture" for hierarchy "ov7670_capture:Inst_ov7670_capture" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 188
+Info (12128): Elaborating entity "ov7670_capture" for hierarchy "ov7670_capture:Inst_ov7670_capture" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 198
 Warning (10230): Verilog HDL assignment warning at ov7670_capture.v(59): truncated value with size 32 to match size of target (17) File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/ov7670_capture.v Line: 59
-Info (12128): Elaborating entity "frame_buffer" for hierarchy "frame_buffer:Inst_frame_buffer" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 197
+Info (12128): Elaborating entity "frame_buffer" for hierarchy "frame_buffer:Inst_frame_buffer" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 207
 Info (12128): Elaborating entity "my_frame_buffer_15to0" for hierarchy "frame_buffer:Inst_frame_buffer|my_frame_buffer_15to0:Inst_buffer_top" File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/frame_buffer.v Line: 61
 Info (12128): Elaborating entity "altsyncram" for hierarchy "frame_buffer:Inst_frame_buffer|my_frame_buffer_15to0:Inst_buffer_top|altsyncram:altsyncram_component" File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/my_frame_buffer_15to0.v Line: 78
 Info (12130): Elaborated megafunction instantiation "frame_buffer:Inst_frame_buffer|my_frame_buffer_15to0:Inst_buffer_top|altsyncram:altsyncram_component" File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/my_frame_buffer_15to0.v Line: 78
@@ -13007,20 +13008,20 @@ Info (12128): Elaborating entity "decode_k8a" for hierarchy "frame_buffer:Inst_f
 Info (12021): Found 1 design units, including 1 entities, in source file db/mux_mob.tdf
     Info (12023): Found entity 1: mux_mob File: C:/intelFPGA_lite/projects/TESTING/CAM/db/mux_mob.tdf Line: 23
 Info (12128): Elaborating entity "mux_mob" for hierarchy "frame_buffer:Inst_frame_buffer|my_frame_buffer_15to0:Inst_buffer_top|altsyncram:altsyncram_component|altsyncram_eik1:auto_generated|mux_mob:mux3" File: C:/intelFPGA_lite/projects/TESTING/CAM/db/altsyncram_eik1.tdf Line: 49
-Info (12128): Elaborating entity "RGB" for hierarchy "RGB:Inst_RGB" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 204
-Info (12128): Elaborating entity "Address_Generator" for hierarchy "Address_Generator:Inst_Address_Generator" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 210
+Info (12128): Elaborating entity "RGB" for hierarchy "RGB:Inst_RGB" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 214
+Info (12128): Elaborating entity "Address_Generator" for hierarchy "Address_Generator:Inst_Address_Generator" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 220
 Warning (10230): Verilog HDL assignment warning at address_Generator.v(45): truncated value with size 32 to match size of target (17) File: C:/intelFPGA_lite/projects/TESTING/CAM/xCAMERA/address_Generator.v Line: 45
-Info (12128): Elaborating entity "target_finder" for hierarchy "target_finder:get_orange" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 221
-Info (12128): Elaborating entity "classification" for hierarchy "classification:classifier" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 233
-Info (12128): Elaborating entity "FSM" for hierarchy "FSM:u_FSM" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 251
+Info (12128): Elaborating entity "target_finder" for hierarchy "target_finder:get_orange" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 231
+Info (12128): Elaborating entity "classification" for hierarchy "classification:classifier" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 243
+Info (12128): Elaborating entity "FSM" for hierarchy "FSM:u_FSM" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 261
 Warning (10034): Output port "HEX5" at FSM.sv(16) has no driver File: C:/intelFPGA_lite/projects/TESTING/CAM/xFSM/FSM.sv Line: 16
-Info (12128): Elaborating entity "json_to_uart_top" for hierarchy "json_to_uart_top:u_json_to_uart_top" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 259
-Warning (10272): Verilog HDL Case Statement warning at json_to_uart_top.sv(347): case item expression covers a value already covered by a previous case item File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 347
-Warning (10230): Verilog HDL assignment warning at json_to_uart_top.sv(412): truncated value with size 32 to match size of target (8) File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 412
-Warning (10230): Verilog HDL assignment warning at json_to_uart_top.sv(421): truncated value with size 32 to match size of target (8) File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 421
-Warning (10230): Verilog HDL assignment warning at json_to_uart_top.sv(437): truncated value with size 32 to match size of target (8) File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 437
-Warning (10034): Output port "LEDR" at json_to_uart_top.sv(7) has no driver File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 7
-Info (12128): Elaborating entity "uart_tx" for hierarchy "json_to_uart_top:u_json_to_uart_top|uart_tx:uart_tx_inst" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 464
+Info (12128): Elaborating entity "json_to_uart_top" for hierarchy "json_to_uart_top:u_json_to_uart_top" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 269
+Warning (10272): Verilog HDL Case Statement warning at json_to_uart_top.sv(345): case item expression covers a value already covered by a previous case item File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 345
+Warning (10230): Verilog HDL assignment warning at json_to_uart_top.sv(408): truncated value with size 32 to match size of target (8) File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 408
+Warning (10230): Verilog HDL assignment warning at json_to_uart_top.sv(417): truncated value with size 32 to match size of target (8) File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 417
+Warning (10230): Verilog HDL assignment warning at json_to_uart_top.sv(433): truncated value with size 32 to match size of target (8) File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 433
+Warning (10034): Output port "LEDR" at json_to_uart_top.sv(6) has no driver File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 6
+Info (12128): Elaborating entity "uart_tx" for hierarchy "json_to_uart_top:u_json_to_uart_top|uart_tx:uart_tx_inst" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 460
 Warning (12161): Node "mic_top_level:u_mic_top_level|dstream:pitch_output|dstream.ready" is stuck at GND because node is in wire loop and does not have a source File: C:/intelFPGA_lite/projects/TESTING/CAM/xUtils/dstream.sv Line: 1
 Info (19000): Inferred 8 megafunctions from design logic
     Info (276034): Inferred altshift_taps megafunction from the following design logic: "mic_top_level:u_mic_top_level|fft_pitch_detect:DUT|FFT:u_fft_ip|SdfUnit:SU1|DelayBuffer:DB1|buf_re_rtl_0"
@@ -13056,7 +13057,7 @@ Info (19000): Inferred 8 megafunctions from design logic
         Info (286033): Parameter TAP_DISTANCE set to 4
         Info (286033): Parameter WIDTH set to 32
 Info (278001): Inferred 58 megafunctions from design logic
-    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "mic_top_level:u_mic_top_level|Div0" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 55
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "mic_top_level:u_mic_top_level|Div0" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 58
     Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "mic_top_level:u_mic_top_level|fft_pitch_detect:DUT|FFT:u_fft_ip|SdfUnit:SU1|Multiply:MU|Mult2" File: c:/intelfpga_lite/projects/testing/cam/xmicrophone/r22sdf/multiply.v Line: 21
     Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "mic_top_level:u_mic_top_level|fft_pitch_detect:DUT|FFT:u_fft_ip|SdfUnit:SU1|Multiply:MU|Mult1" File: c:/intelfpga_lite/projects/testing/cam/xmicrophone/r22sdf/multiply.v Line: 20
     Info (278003): Inferred multiplier megafunction ("lpm_mult") from the following logic: "mic_top_level:u_mic_top_level|fft_pitch_detect:DUT|FFT:u_fft_ip|SdfUnit:SU1|Multiply:MU|Mult3" File: c:/intelfpga_lite/projects/testing/cam/xmicrophone/r22sdf/multiply.v Line: 22
@@ -13216,8 +13217,8 @@ Info (12021): Found 1 design units, including 1 entities, in source file db/alts
     Info (12023): Found entity 1: altsyncram_qd81 File: C:/intelFPGA_lite/projects/TESTING/CAM/db/altsyncram_qd81.tdf Line: 28
 Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_4pf.tdf
     Info (12023): Found entity 1: cntr_4pf File: C:/intelFPGA_lite/projects/TESTING/CAM/db/cntr_4pf.tdf Line: 26
-Info (12130): Elaborated megafunction instantiation "mic_top_level:u_mic_top_level|lpm_divide:Div0" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 55
-Info (12133): Instantiated megafunction "mic_top_level:u_mic_top_level|lpm_divide:Div0" with the following parameter: File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 55
+Info (12130): Elaborated megafunction instantiation "mic_top_level:u_mic_top_level|lpm_divide:Div0" File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 58
+Info (12133): Instantiated megafunction "mic_top_level:u_mic_top_level|lpm_divide:Div0" with the following parameter: File: C:/intelFPGA_lite/projects/TESTING/CAM/xMICROPHONE/mic_top_level.sv Line: 58
     Info (12134): Parameter "LPM_WIDTHN" = "32"
     Info (12134): Parameter "LPM_WIDTHD" = "9"
     Info (12134): Parameter "LPM_NREPRESENTATION" = "UNSIGNED"
@@ -13576,13 +13577,13 @@ Warning (13039): The following bidirectional pins have no drivers
     Warning (13040): bidirectional pin "GPIO[35]" has no driver File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 79
 Warning (13032): The following tri-state nodes are fed by constants
     Warning (13033): The pin "GPIO[11]" is fed by VCC File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 79
-Info (13000): Registers with preset signals will power-up high File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 419
+Info (13000): Registers with preset signals will power-up high File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 415
 Info (13003): DEV_CLRn pin will set, and not reset, register with preset signal due to NOT Gate Push-Back
 Warning (13004): Presettable and clearable registers converted to equivalent circuits with latches. Registers power-up to an undefined state, and DEVCLRn places the registers in an undefined state.
-    Warning (13310): Register "json_to_uart_top:u_json_to_uart_top|byte_index[0]" is converted into an equivalent circuit using register "json_to_uart_top:u_json_to_uart_top|byte_index[0]~_emulated" and latch "json_to_uart_top:u_json_to_uart_top|byte_index[0]~1" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 419
-    Warning (13310): Register "json_to_uart_top:u_json_to_uart_top|byte_index[1]" is converted into an equivalent circuit using register "json_to_uart_top:u_json_to_uart_top|byte_index[1]~_emulated" and latch "json_to_uart_top:u_json_to_uart_top|byte_index[1]~5" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 419
-    Warning (13310): Register "json_to_uart_top:u_json_to_uart_top|byte_index[3]" is converted into an equivalent circuit using register "json_to_uart_top:u_json_to_uart_top|byte_index[3]~_emulated" and latch "json_to_uart_top:u_json_to_uart_top|byte_index[3]~9" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 419
-    Warning (13310): Register "json_to_uart_top:u_json_to_uart_top|byte_index[2]" is converted into an equivalent circuit using register "json_to_uart_top:u_json_to_uart_top|byte_index[2]~_emulated" and latch "json_to_uart_top:u_json_to_uart_top|byte_index[2]~13" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 419
+    Warning (13310): Register "json_to_uart_top:u_json_to_uart_top|byte_index[0]" is converted into an equivalent circuit using register "json_to_uart_top:u_json_to_uart_top|byte_index[0]~_emulated" and latch "json_to_uart_top:u_json_to_uart_top|byte_index[0]~1" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 415
+    Warning (13310): Register "json_to_uart_top:u_json_to_uart_top|byte_index[1]" is converted into an equivalent circuit using register "json_to_uart_top:u_json_to_uart_top|byte_index[1]~_emulated" and latch "json_to_uart_top:u_json_to_uart_top|byte_index[1]~5" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 415
+    Warning (13310): Register "json_to_uart_top:u_json_to_uart_top|byte_index[3]" is converted into an equivalent circuit using register "json_to_uart_top:u_json_to_uart_top|byte_index[3]~_emulated" and latch "json_to_uart_top:u_json_to_uart_top|byte_index[3]~9" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 415
+    Warning (13310): Register "json_to_uart_top:u_json_to_uart_top|byte_index[2]" is converted into an equivalent circuit using register "json_to_uart_top:u_json_to_uart_top|byte_index[2]~_emulated" and latch "json_to_uart_top:u_json_to_uart_top|byte_index[2]~13" File: C:/intelFPGA_lite/projects/TESTING/CAM/xIR/IR_Remote/json_to_uart_top.sv Line: 415
 Warning (13009): TRI or OPNDRN buffers permanently enabled
     Warning (13010): Node "GPIO[5]~synth" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 79
     Warning (13010): Node "GPIO[11]~synth" File: C:/intelFPGA_lite/projects/TESTING/CAM/top_level.sv Line: 79
@@ -13680,10 +13681,10 @@ Info (21057): Implemented 11188 device resources after synthesis - the final res
     Info (21065): Implemented 3 PLLs
     Info (21062): Implemented 176 DSP elements
 Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 137 warnings
-    Info: Peak virtual memory: 5031 megabytes
-    Info: Processing ended: Wed Oct 30 23:03:26 2024
+    Info: Peak virtual memory: 5069 megabytes
+    Info: Processing ended: Mon Nov 04 23:27:52 2024
     Info: Elapsed time: 00:01:10
-    Info: Total CPU time (on all processors): 00:00:44
+    Info: Total CPU time (on all processors): 00:00:33
 
 
 +------------------------------------------+

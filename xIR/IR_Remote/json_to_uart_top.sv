@@ -1,12 +1,10 @@
 module json_to_uart_top(
     input  logic clk,
     input  logic rst,               // Reset button (e.g., KEY[0])
-    //input  logic transmitting,             // Start signal from switch (e.g., SW[0])
 	input  logic [3:0] state_control, // External input for state control (3 bits)
     output logic GPIO_5,            // UART TX data on GPIO[5]
     output logic [17:0] LEDR,       // LEDs to display transmitted bytes and status
-    output logic done,
-	output logic [7:0] json_len_test               // Transmission complete signal
+    output logic done
 );
 
     // Internal signals
@@ -403,8 +401,6 @@ module json_to_uart_top(
 			end
         endcase
     end
-
-	assign json_len_test = json_len;
 
     // UART transmission and FSM for handling the transmission
     always_ff @(posedge clk or posedge rst) begin
